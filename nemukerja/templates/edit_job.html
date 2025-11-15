@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Job - NemuKerja{% endblock %}
+
+{% block content %}
+<div class="wrap">
+    <div class="img" style="background-color: #e9ecef; height: 150px; display: flex; justify-content: center; align-items: center;">
+        <img src="{{ url_for('static', filename='images/banner.png') }}" style="width: 450px; height: 150px;">
+    </div>
+    
+    <h2>
+        <span data-i18n="edit_job_edit_job_en">Edit Job:</span>
+        <span data-i18n="edit_job_edit_job_id" class="d-none">Edit Pekerjaan:</span>
+        {{ job.title }}
+    </h2>
+    
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        
+        <div class="form-group mt-3">
+            <label class="form-label fw-bold">
+                <span data-i18n="edit_job_job_title_en">Job Title</span>
+                <span data-i18n="edit_job_job_title_id" class="d-none">Judul Pekerjaan</span>
+            </label>
+            {{ form.title(class="form-control") }}
+            {% if form.title.errors %}
+                <div class="text-danger mt-1">
+                    {% for error in form.title.errors %}
+                        <small>{{ error }}</small>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group mt-3">
+            <label class="form-label fw-bold">
+                <span data-i18n="edit_job_location_en">Location</span>
+                <span data-i18n="edit_job_location_id" class="d-none">Lokasi</span>
+            </label>
+            {{ form.location(class="form-control") }}
+            {% if form.location.errors %}
+                <div class="text-danger mt-1">
+                    {% for error in form.location.errors %}
+                        <small>{{ error }}</small>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group mt-3">
+            <label class="form-label fw-bold">
+                <span data-i18n="edit_job_available_slots_en">Available Slots</span>
+                <span data-i18n="edit_job_available_slots_id" class="d-none">Kuota Tersedia</span>
+            </label>
+            {{ form.slots(class="form-control") }}
+            {% if form.slots.errors %}
+                <div class="text-danger mt-1">
+                    {% for error in form.slots.errors %}
+                        <small>{{ error }}</small>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- NEW SALARY FIELDS -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group mt-3">
+                    <label class="form-label fw-bold">
+                        <span data-i18n="salary_min_label_en">Minimum Salary (Optional)</span>
+                        <span data-i18n="salary_min_label_id" class="d-none">Gaji Minimum (Opsional)</span>
+                    </label>
+                    {{ form.salary_min(class="form-control", placeholder="e.g., 5000000") }}
+                    {% if form.salary_min.errors %}
+                        <div class="text-danger mt-1">
+                            {% for error in form.salary_min.errors %}
+                                <small>{{ error }}</small>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group mt-3">
+                    <label class="form-label fw-bold">
+                        <span data-i18n="salary_max_label_en">Maximum Salary (Optional)</span>
+                        <span data-i18n="salary_max_label_id" class="d-none">Gaji Maksimum (Opsional)</span>
+                    </label>
+                    {{ form.salary_max(class="form-control", placeholder="e.g., 8000000") }}
+                    {% if form.salary_max.errors %}
+                        <div class="text-danger mt-1">
+                            {% for error in form.salary_max.errors %}
+                                <small>{{ error }}</small>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <!-- END NEW SALARY FIELDS -->
+
+        <div class="form-group mt-3">
+            <label class="form-label fw-bold">
+                <span data-i18n="edit_job_job_description_en">Job Description</span>
+                <span data-i18n="edit_job_job_description_id" class="d-none">Deskripsi Pekerjaan</span>
+            </label>
+            {{ form.description(class="form-control", rows="6") }}
+            {% if form.description.errors %}
+                <div class="text-danger mt-1">
+                    {% for error in form.description.errors %}
+                        <small>{{ error }}</small>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group mt-3">
+            <label class="form-label fw-bold">
+                <span data-i18n="edit_job_qualifications_en">Qualifications</span>
+                <span data-i18n="edit_job_qualifications_id" class="d-none">Kualifikasi</span>
+            </label>
+            {{ form.qualifications(class="form-control", rows="4") }}
+            {% if form.qualifications.errors %}
+                <div class="text-danger mt-1">
+                    {% for error in form.qualifications.errors %}
+                        <small>{{ error }}</small>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group mt-4">
+            {{ form.submit(class="btn btn-primary form-control", **{'data-i18n-value-en': 'Save Changes', 'data-i18n-value-id': 'Simpan Perubahan'}) }}
+        </div>
+        
+        <div class="mt-3 text-center">
+            <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">
+                <span data-i18n="edit_job_back_to_dashboard_en">Back to Dashboard</span>
+                <span data-i18n="edit_job_back_to_dashboard_id" class="d-none">Kembali ke Dasbor</span>
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

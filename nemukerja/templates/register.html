@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Up - NemuKerja{% endblock %}
+
+{% block content %}
+<div class="container-sm">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-lg border-0">
+                <div class="card-body p-4">
+                    <h2 class="text-center display-5 fw-bold mb-4">
+                        <span data-i18n="register_sign_up_en">Sign Up</span>
+                        <span data-i18n="register_sign_up_id" class="d-none">Daftar</span>
+                    </h2>  
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                    
+                    <form method="POST" action="{{ url_for('register') }}">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="mb-3">
+                            <label for="name" class="form-label">
+                                <span data-i18n="register_full_name_en">Full Name</span>
+                                <span data-i18n="register_full_name_id" class="d-none">Nama Lengkap</span>
+                            </label>
+                            {{ form.name(class="form-control", id="name", placeholder="", 
+                               **{'data-i18n-placeholder-en': 'Enter your full name', 
+                                 'data-i18n-placeholder-id': 'Masukkan nama lengkap Anda'}) }}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="email" class="form-label">
+                                <span data-i18n="register_email_address_en">Email Address</span>
+                                <span data-i18n="register_email_address_id" class="d-none">Alamat Email</span>
+                            </label>
+                            {{ form.email(class="form-control", id="email", placeholder="", 
+                               **{'data-i18n-placeholder-en': 'Enter your email address', 
+                                 'data-i18n-placeholder-id': 'Masukkan alamat email Anda'}) }}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">
+                                <span data-i18n="register_phone_number_en">Phone Number</span>
+                                <span data-i18n="register_phone_number_id" class="d-none">Nomor Telepon</span>
+                            </label>
+                            {{ form.phone(class="form-control", id="phone", placeholder="", 
+                               **{'data-i18n-placeholder-en': 'Enter your phone number', 
+                                 'data-i18n-placeholder-id': 'Masukkan nomor telepon Anda'}) }}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="signup_password" class="form-label">
+                                <span data-i18n="register_password_en">Password</span>
+                                <span data-i18n="register_password_id" class="d-none">Kata Sandi</span>
+                            </label>
+                            <div class="input-group">
+                                {{ form.password(class="form-control", id="signup_password", placeholder="", 
+                                   **{'data-i18n-placeholder-en': 'Create a password', 
+                                     'data-i18n-placeholder-id': 'Buat kata sandi'}) }}
+                                <button type="button" class="input-group-text btn-eye" onclick="togglePassword('signup_password')" aria-label="Toggle password visibility">
+                                    <i class="fa fa-eye" id="eye-signup_password" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="confirm_password" class="form-label">
+                                <span data-i18n="register_confirm_password_en">Confirm Password</span>
+                                <span data-i18n="register_confirm_password_id" class="d-none">Konfirmasi Kata Sandi</span>
+                            </label>
+                            <div class="input-group">
+                                {{ form.confirm_password(class="form-control", id="confirm_password", placeholder="", 
+                                   **{'data-i18n-placeholder-en': 'Confirm your password', 
+                                     'data-i18n-placeholder-id': 'Konfirmasi kata sandi Anda'}) }}
+                                <button type="button" class="input-group-text btn-eye" onclick="togglePassword('confirm_password')" aria-label="Toggle confirm password visibility">
+                                    <i class="fa fa-eye" id="eye-confirm_password" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="role_select" class="form-label">
+                                <span data-i18n="register_i_am_a_en">I am a</span>
+                                <span data-i18n="register_i_am_a_id" class="d-none">Saya adalah</span>
+                            </label>
+                            {{ form.role(class="form-select", id="role_select") }}
+                        </div>
+                        
+                        <div id="company_fields" style="display: none;">
+                            <div class="mb-3">
+                                <label for="company_name" class="form-label">
+                                    <span data-i18n="register_company_name_en">Company Name</span>
+                                    <span data-i18n="register_company_name_id" class="d-none">Nama Perusahaan</span>
+                                </label>
+                                {{ form.company_name(class="form-control", id="company_name", placeholder="", 
+                                   **{'data-i18n-placeholder-en': 'Enter your company name', 
+                                     'data-i18n-placeholder-id': 'Masukkan nama perusahaan Anda'}) }}
+                            </div>
+                            <div class="mb-3">
+                                <label for="description" class="form-label">
+                                    <span data-i18n="register_company_description_en">Company Description</span>
+                                    <span data-i18n="register_company_description_id" class="d-none">Deskripsi Perusahaan</span>
+                                </label>
+                                {{ form.description(class="form-control", id="description", rows="3", placeholder="", 
+                                   **{'data-i18n-placeholder-en': 'Brief description about your company', 
+                                     'data-i18n-placeholder-id': 'Deskripsi singkat tentang perusahaan Anda'}) }}
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form.submit(class="btn btn-primary w-100", **{'data-i18n-value-en': 'Sign Up', 'data-i18n-value-id': 'Daftar'}) }}
+                        </div>
+                        
+                        <div class="text-center">
+                            <p class="mb-0">
+                                <span data-i18n="register_already_have_an_account_en">Already have an account?</span>
+                                <span data-i18n="register_already_have_an_account_id" class="d-none">Sudah punya akun?</span>
+                                <a href="{{ url_for('login') }}" class="text-primary"> <span data-i18n="register_sign_in_en">Sign In</span>
+                                    <span data-i18n="register_sign_in_id" class="d-none">Masuk</span>
+                                </a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

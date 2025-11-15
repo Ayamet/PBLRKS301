@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+
+{% block title %}Job Listings - NemuKerja{% endblock %}
+
+{% block content %}
+<div class="container"> <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold text-dark mb-3">
+            <span data-i18n="index_available_job_listings_en">Available Job Listings</span>
+            <span data-i18n="index_available_job_listings_id" class="d-none">Daftar Pekerjaan Tersedia</span>
+        </h1>
+        <p class="lead text-muted">
+            <span data-i18n="index_discover_opportunities_en">Discover your next career opportunity from top companies</span>
+            <span data-i18n="index_discover_opportunities_id" class="d-none">Temukan peluang karir berikutnya dari perusahaan terkemuka</span>
+        </p>
+    </div>
+
+    {% include '_filter_form.html' %}
+
+    {% if jobs_pagination.items %}
+        <div class="row g-4 mb-5">
+            {% for job in jobs_pagination.items %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 shadow-sm border-0 rounded-3">
+                    <div class="card-body p-4">
+                        <div class="mb-3">
+                            <h5 class="card-title fw-bold text-dark mb-2">{{ job.title }}</h5>
+                            <h6 class="card-subtitle text-muted d-flex align-items-center">
+                                <i class="fas fa-building text-muted me-2"></i>
+                                {{ job.company.company_name }}
+                            </h6>
+                        </div>
+                        
+                        <p class="card-text text-muted mb-4 small">
+                            {{ job.description[:120] }}{% if job.description|length > 120 %}...{% endif %}
+                        </p>
+                        
+                        <div class="vstack gap-2 mb-4">
+                            <div class="d-flex align-items-center text-muted small">
+                                <i class="fas fa-map-marker-alt text-primary me-2" style="width: 1rem;"></i>
+                                <span>{{ job.location }}</span>
+                            </div>
+                            <div class="d-flex align-items-center text-muted small">
+                                <i class="fas fa-money-bill-wave text-success me-2" style="width: 1rem;"></i>
+                                <span>
+                                    {% if job.salary_min > 0 and job.salary_max > 0 %}
+                                        Rp {{ "{:,.0f}".format(job.salary_min).replace(',', '.') }} - Rp {{ "{:,.0f}".format(job.salary_max).replace(',', '.') }}
+                                    {% elif job.salary_min > 0 %}
+                                        <span data-i18n="salary_from_en">From</span>
+                                        <span data-i18n="salary_from_id" class="d-none">Mulai dari</span>
+                                        Rp {{ "{:,.0f}".format(job.salary_min).replace(',', '.') }}
+                                    {% elif job.salary_max > 0 %}
+                                        <span data-i18n="salary_upto_en">Up to</span>
+                                        <span data-i18n="salary_upto_id" class="d-none">Hingga</span>
+                                        Rp {{ "{:,.0f}".format(job.salary_max).replace(',', '.') }}
+                                    {% else %}
+                                        <span data-i18n="salary_not_disclosed_en">Salary not disclosed</span>
+                                        <span data-i18n="salary_not_disclosed_id" class="d-none">Gaji tidak ditampilkan</span>
+                                    {% endif %}
+                                </span>
+                            </div>
+                            <div class="d-flex align-items-center text-muted small">
+                                <i class="fas fa-users text-info me-2" style="width: 1rem;"></i>
+                                <span>
+                                    {{ job.slots }} 
+                                    <span data-i18n="index_slots_available_en">slots available</span>
+                                    <span data-i18n="index_slots_available_id" class="d-none">kuota tersedia</span>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="button" 
+                                    class="btn btn-outline-primary w-50"
+                                    onclick="showJobDetail('{{ job.id }}')">
+                                <i class="fas fa-eye me-1"></i>
+                                <span data-i18n="index_view_details_en">Details</span>
+                                <span data-i18n="index_view_details_id" class="hidden">Detail</span>
+                            </button>
+                            <a href="{{ url_for('login') }}" class="btn btn-primary w-50">
+                                <i class="fas fa-sign-in-alt me-1"></i>
+                                <span data-i18n="index_login_to_apply_en">Login to Apply</span>
+                                <span data-i18n="index_login_to_apply_id" class="hidden">Masuk</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% set pagination = jobs_pagination %}
+        {% include '_pagination.html' %}
+        
+    {% else %}
+        <div class="card text-center py-5 shadow-sm border-0 rounded-3">
+            <div class="card-body">
+                <i class="fas fa-briefcase fa-3x text-muted mb-4"></i>
+                <h4 class="card-title fw-bold text-dark mb-3">
+                    <span data-i18n="index_no_jobs_available_en">No Jobs Available</span>
+                    <span data-i18n="index_no_jobs_available_id" class="hidden">Tidak Ada Pekerjaan Tersedia</span>
+                </h4>
+                <p class="card-text text-muted mb-4">
+                    <span data-i18n="index_check_back_later_en">Please check back later for new job opportunities.</span>
+                    <span data-i18n="index_check_back_later_id" class="hidden">Silakan periksa kembali nanti untuk peluang pekerjaan baru.</span>
+                </p>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if not current_user.is_authenticated %}
+    <div class="bg-primary text-white rounded-3 p-5 text-center mb-5 shadow">
+        <h3 class="fw-bold mb-3">
+            <span data-i18n="index_ready_to_start_en">Ready to start your career journey?</span>
+            <span data-i18n="index_ready_to_start_id" class="hidden">Siap memulai perjalanan karir Anda?</span>
+        </h3>
+        <p class="lead mb-4">
+            <span data-i18n="index_join_our_community_en">Join our community of job seekers and find your perfect match today!</span>
+            <span data-i18n="index_join_our_community_id" class="hidden">Bergabunglah dengan komunitas pencari kerja kami dan temukan kesempatan terbaik hari ini!</span>
+        </p>
+        <div class="d-grid gap-2 d-sm-flex justify-content-center">
+            <a href="{{ url_for('register') }}" class="btn btn-light btn-lg px-4 gap-3">
+                <i class="fas fa-user-plus me-1"></i>
+                <span data-i18n="index_register_now_en">Register Now</span>
+                <span data-i18n="index_register_now_id" class="hidden">Daftar Sekarang</span>
+            </a>
+            <a href="{{ url_for('login') }}" class="btn btn-outline-light btn-lg px-4">
+                <i class="fas fa-sign-in-alt me-1"></i>
+                <span data-i18n="index_login_now_en">Login Now</span>
+                <span data-i18n="index_login_now_id" class="hidden">Masuk Sekarang</span>
+            </a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<div class="modal fade" id="jobDetailModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content border-0 shadow-lg rounded-3">
+            <div class="modal-header bg-primary text-white border-0 rounded-top-3 p-4">
+                <h5 class="modal-title h4 fw-bold d-flex align-items-center" id="jobDetailTitle">
+                    <i class="fas fa-briefcase me-3"></i>
+                    <span data-i18n="index_job_details_en">Job Details</span>
+                    <span data-i18n="index_job_details_id" class="d-none">Detail Pekerjaan</span>
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4" id="jobDetailBody">
+                </div>
+            <div class="modal-footer border-top-0 bg-light p-3">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <span data-i18n="btn_close_en">Close</span>
+                    <span data-i18n="btn_close_id" class="d-none">Tutup</span>
+                </button>
+                <span id="applyButtonContainer">
+                    </span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

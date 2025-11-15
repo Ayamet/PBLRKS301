@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}Reset Password - NemuKerja{% endblock %}
+
+{% block content %}
+<div class="container-sm">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-lg border-0">
+                <div class="card-body p-4">
+                    
+                    <h2 class="text-center display-5 fw-bold mb-4">
+                        <span data-i18n="reset_password_en">Reset Your Password</span>
+                        <span data-i18n="reset_password_id" class="d-none">Atur Ulang Kata Sandi</span>
+                    </h2>
+                    
+                    <form method="POST">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="mb-3">
+                            <label for="signup_password" class="form-label">
+                                <span data-i18n="register_password_en">New Password</span>
+                                <span data-i18n="register_password_id" class="d-none">Kata Sandi Baru</span>
+                            </label>
+                            <div class="input-group">
+                                {{ form.password(class="form-control", id="signup_password") }}
+                                <button type="button" class="input-group-text btn-eye" onclick="togglePassword('signup_password')" aria-label="Toggle password visibility">
+                                    <i class="fa fa-eye" id="eye-signup_password" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            {% if form.password.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in form.password.errors %}
+                                        <small>{{ error }}</small><br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="confirm_password" class="form-label">
+                                <span data-i18n="register_confirm_password_en">Confirm New Password</span>
+                                <span data-i18n="register_confirm_password_id" class="d-none">Konfirmasi Kata Sandi Baru</span>
+                            </label>
+                            <div class="input-group">
+                                {{ form.confirm_password(class="form-control", id="confirm_password") }}
+                                <button type="button" class="input-group-text btn-eye" onclick="togglePassword('confirm_password')" aria-label="Toggle confirm password visibility">
+                                    <i class="fa fa-eye" id="eye-confirm_password" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                             {% if form.confirm_password.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in form.confirm_password.errors %}
+                                        <small>{{ error }}</small><br>
+                                    {% endfor %}
+                                </div>
+                             {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form.submit(class="btn btn-primary w-100", **{'data-i18n-value-en': 'Reset Password', 'data-i18n-value-id': 'Atur Ulang Kata Sandi'}) }}
+                        </div>
+
+                        <div class="mt-3 text-center">
+                            <p class="mb-0">
+                                <span data-i18n="reactive_back_to_en">Back to</span>
+                                <span data-i18n="reactive_back_to_id" class="d-none">Kembali ke</span>
+                                <a href="{{ url_for('login') }}" class="text-primary">
+                                    <span data-i18n="reactive_sign_in_en">Sign In</span>
+                                    <span data-i18n="reactive_sign_in_id" class="d-none">Masuk</span>
+                                </a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

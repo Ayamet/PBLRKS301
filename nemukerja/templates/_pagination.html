@@ -1,0 +1,44 @@
+{% if pagination.pages > 1 %}
+<nav aria-label="Page navigation" class="mt-5 d-flex justify-content-center">
+    <ul class="pagination shadow-sm">
+
+        <!-- Tombol "Previous" -->
+        <li class="page-item {% if not pagination.has_prev %}disabled{% endif %}">
+            <a class="page-link" 
+               href="{{ url_for(request.endpoint, page=pagination.prev_num, **request.args) }}" 
+               aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+                <!-- Tambahan untuk Screen Reader -->
+                <span class="visually-hidden" data-i18n="pagination_prev_en">Previous</span>
+                <span class="visually-hidden" data-i18n="pagination_prev_id" class="d-none">Sebelumnya</span>
+            </a>
+        </li>
+
+        <!-- Nomor Halaman -->
+        {% for page_num in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+            {% if page_num %}
+                <li class="page-item {% if pagination.page == page_num %}active{% endif %}">
+                    <a class="page-link" 
+                       href="{{ url_for(request.endpoint, page=page_num, **request.args) }}">
+                       {{ page_num }}
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item disabled"><span class="page-link">...</span></li>
+            {% endif %}
+        {% endfor %}
+
+        <!-- Tombol "Next" -->
+        <li class="page-item {% if not pagination.has_next %}disabled{% endif %}">
+            <a class="page-link" 
+               href="{{ url_for(request.endpoint, page=pagination.next_num, **request.args) }}" 
+               aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+                <!-- Tambahan untuk Screen Reader -->
+                <span class="visually-hidden" data-i18n="pagination_next_en">Next</span>
+                <span class="visually-hidden" data-i18n="pagination_next_id" class="d-none">Berikutnya</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+{% endif %}

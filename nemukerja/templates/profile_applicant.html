@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}My Profile - NemuKerja{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0 rounded-3">
+                <div class="card-body p-4 p-md-5">
+
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2 class="display-5 fw-bold text-dark">
+                            <span data-i18n="profile_my_profile_en">My Profile</span>
+                            <span data-i18n="profile_my_profile_id" class="d-none">Profil Saya</span>
+                        </h2>
+                        <a href="{{ url_for('edit_profile') }}" class="btn btn-outline-primary">
+                            <i class="fas fa-edit me-2"></i>
+                            <span data-i18n="profile_edit_profile_en">Edit Profile</span>
+                            <span data-i18n="profile_edit_profile_id" class="d-none">Ubah Profil</span>
+                        </a>
+                    </div>
+
+                    <div class="mb-3">
+                        <!-- FIX: Label diterjemahkan -->
+                        <label class="form-label text-muted small">
+                            <span data-i18n="profile_full_name_en">Full Name</span>
+                            <span data-i18n="profile_full_name_id" class="d-none">Nama Lengkap</span>
+                        </label>
+                        <p class="fs-5">{{ current_user.applicant_profile.full_name }}</p>
+                    </div>
+
+                    <div class="mb-3">
+                        <!-- FIX: Label diterjemahkan -->
+                        <label class="form-label text-muted small">
+                            <span data-i18n="profile_email_en">Email Address</span>
+                            <span data-i18n="profile_email_id" class="d-none">Alamat Email</span>
+                        </label>
+                        <p class="fs-5">{{ current_user.email }}</p>
+                    </div>
+
+                    <div class="mb-3">
+                        <!-- FIX: Label diterjemahkan -->
+                        <label class="form-label text-muted small">
+                            <span data-i18n="profile_phone_en">Phone Number</span>
+                            <span data-i18n="profile_phone_id" class="d-none">Nomor Telepon</span>
+                        </label>
+                        <p class="fs-5">{{ current_user.applicant_profile.phone or 'N/A' }}</p>
+                    </div>
+
+                    <div class="mb-3">
+                        <!-- FIX: Label diterjemahkan -->
+                        <label class="form-label text-muted small">
+                            <span data-i18n="profile_skills_en">Skills</span>
+                            <span data-i18n="profile_skills_id" class="d-none">Keahlian</span>
+                        </label>
+                        {% if current_user.applicant_profile.skills %}
+                            <p class="fs-5" style="white-space: pre-wrap;">{{ current_user.applicant_profile.skills }}</p>
+                        {% else %}
+                            <p class="fs-5 text-muted">
+                                <span data-i18n="profile_no_skills_en">You have not added any skills.</span>
+                                <span data-i18n="profile_no_skills_id" class="d-none">Anda belum menambahkan keahlian.</span>
+                            </p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

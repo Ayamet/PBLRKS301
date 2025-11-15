@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Jobs - Admin Dashboard - NemuKerja{% endblock %}
+
+{% block content %}
+<div class="container">
+    
+    <div class="card shadow-sm border-0 rounded-3">
+        <div class="card-body p-4">
+
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+                <h2 class="display-5 fw-bold text-dark">
+                    <!-- FIX: Terjemahan ditambahkan -->
+                    <span data-i18n="admin_jobs_manage_jobs_en">Manage Jobs</span>
+                    <span data-i18n="admin_jobs_manage_jobs_id" class="d-none">Kelola Pekerjaan</span>
+                </h2>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <div class="btn-group me-2">
+                        <span class="btn btn-sm btn-outline-secondary">
+                            Total: {{ jobs|length }} jobs
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <!-- FIX: Terjemahan ditambahkan -->
+                            <th><span data-i18n="admin_th_job_title_en">Job Title</span><span data-i18n="admin_th_job_title_id" class="d-none">Judul Pekerjaan</span></th>
+                            <th><span data-i18n="admin_th_comp_name_en">Company</span><span data-i18n="admin_th_comp_name_id" class="d-none">Perusahaan</span></th>
+                            <th><span data-i18n="admin_th_location_en">Location</span><span data-i18n="admin_th_location_id" class="d-none">Lokasi</span></th>
+                            <th><span data-i18n="admin_th_salary_en">Salary (IDR)</span><span data-i18n="admin_th_salary_id" class="d-none">Gaji (IDR)</span></th>
+                            <th><span data-i18n="admin_th_slots_en">Slots</span><span data-i18n="admin_th_slots_id" class="d-none">Slot</span></th>
+                            <th><span data-i18n="admin_th_applicants_en">Applicants</span><span data-i18n="admin_th_applicants_id" class="d-none">Pelamar</span></th>
+                            <th><span data-i18n="admin_th_status_en">Status</span><span data-i18n="admin_th_status_id" class="d-none">Status</span></th>
+                            <th><span data-i18n="admin_th_posted_en">Posted</span><span data-i18n="admin_th_posted_id" class="d-none">Diposting</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for job in jobs %}
+                        <tr>
+                            <td>{{ job.id }}</td>
+                            <td>
+                                <strong class="text-dark">{{ job.title }}</strong>
+                            </td>
+                            <td>{{ job.company.company_name }}</td>
+                            <td>{{ job.location }}</td>
+                            <td>
+                                {% if job.salary_min > 0 %}
+                                    {{ "{:,.0f}".format(job.salary_min).replace(',', '.') }} - {{ "{:,.0f}".format(job.salary_max).replace(',', '.') if job.salary_max > 0 else '...' }}
+                                {% else %}
+                                    N/A
+                                {% endif %}
+                            </td>
+                            <td>
+                                <span class="badge rounded-pill bg-primary-subtle text-primary-emphasis">{{ job.slots }}</span>
+                            </td>
+                            <td>
+                                <span class="badge rounded-pill bg-info-subtle text-info-emphasis">{{ job.applications|length }}</span>
+                            </td>
+                            <td>
+                                <span class="badge rounded-pill {% if job.is_open %}bg-success-subtle text-success-emphasis{% else %}bg-secondary-subtle text-secondary-emphasis{% endif %}">
+                                    {% if job.is_open %}
+                                        <span data-i18n="status_open_en">Open</span>
+                                        <span data-i18n="status_open_id" class="d-none">Dibuka</span>
+                                    {% else %}
+                                        <span data-i18n="status_closed_en">Closed</span>
+                                        <span data-i18n="status_closed_id" class="d-none">Ditutup</span>
+                                    {% endif %}
+                                </span>
+                            </td>
+                            <td>{{ job.posted_at.strftime('%Y-%m-%d') }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}Sign In - NemuKerja{% endblock %}
+
+{% block content %}
+
+<div class="container-sm">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-lg border-0">
+                <div class="card-body p-4">
+                    <h2 class="text-center display-5 fw-bold mb-4">
+                        <span data-i18n="login_sign_in_en">Sign In</span>
+                        <span data-i18n="login_sign_in_id" class="d-none">Masuk</span>
+                    </h2>
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                   </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+
+                    <form method="POST" action="{{ url_for('login') }}">
+                        {{ form.hidden_tag() }}
+
+                        <div class="mb-3">
+                            {{ form.email(class="form-control", id="email", placeholder="", 
+                            **{'data-i18n-placeholder-en': 'Enter your email', 
+                                'data-i18n-placeholder-id': 'Masukkan email Anda'}) }}
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="input-group">
+                                {{ form.password(class="form-control", id="login_password", placeholder="", 
+                                **{'data-i18n-placeholder-en': 'Enter your password', 
+                                    'data-i18n-placeholder-id': 'Masukkan kata sandi Anda'}) }}
+                                <button type="button" class="input-group-text btn-eye" onclick="togglePassword('login_password')" aria-label="Toggle password visibility">
+                                    <i class="fa fa-eye" id="eye-login_password"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="mb-3 d-flex justify-content-between align-items-center">
+                            <div class="form-check">
+                                {{ form.remember(class="form-check-input", id="remember") }}
+                                <label class="form-check-label" for="remember">
+                                    <span data-i18n="login_remember_me_en">Remember me</span>
+                                    <span data-i18n="login_remember_me_id" class="d-none">Ingat saya</span>
+                                </label>
+                            </div>
+                            <div>
+                                <a href="{{ url_for('reactivate') }}" class="small text-primary">
+                                    <span data-i18n="login_forgot_password_en">Forgot Password?</span>
+                                    <span data-i18n="login_forgot_password_id" class="d-none">Lupa Kata Sandi?</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form.submit(class="btn btn-primary w-100", **{'data-i18n-value-en': 'Sign In', 'data-i18n-value-id': 'Masuk'}) }}
+                        </div>
+
+                        <div class="text-center">
+                            <p class="mb-0"> <span data-i18n="login_don_t_have_an_account_en">Don't have an account?</span>
+                                <span data-i18n="login_don_t_have_an_account_id" class="d-none">Tidak punya akun?</span>
+                                <a href="{{ url_for('register') }}" class="text-primary"> <span data-i18n="login_sign_up_en">Sign Up</span>
+                                    <span data-i18n="login_sign_up_id" class="d-none">Daftar</span>
+                                </a>
+                            </p>
+                            </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

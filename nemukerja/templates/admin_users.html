@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Users - Admin Dashboard - NemuKerja{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="card shadow-sm border-0 rounded-3">
+        <div class="card-body p-4">
+
+            <!-- Header Halaman -->
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+                <h2 class="display-5 fw-bold text-dark">
+                    <span data-i18n="admin_users_manage_users_en">Manage Users</span>
+                    <span data-i18n="admin_users_manage_users_id" class="d-none">Kelola Pengguna</span>
+                </h2>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <div class="btn-group me-2">
+                        <!-- FIX: Terjemahan ditambahkan untuk total -->
+                        <span class="btn btn-sm btn-outline-secondary">
+                            Total: {{ users|length }} 
+                            <span data-i18n="admin_users_total_users_en">users</span>
+                            <span data-i18n="admin_users_total_users_id" class="d-none">pengguna</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabel -->
+            <div class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead class="table-dark">
+                        <!-- Header sudah benar -->
+                        <tr>
+                            <th>ID</th>
+                            <th>
+                                <span data-i18n="admin_users_th_name_en">Name</span>
+                                <span data-i18n="admin_users_th_name_id" class="d-none">Nama</span>
+                            </th>
+                            <th>
+                                <span data-i18n="admin_users_th_email_en">Email</span>
+                                <span data-i18n="admin_users_th_email_id" class="d-none">Email</span>
+                            </th>
+                            <th>
+                                <span data-i18n="admin_users_th_role_en">Role</span>
+                                <span data-i18n="admin_users_th_role_id" class="d-none">Peran</span>
+                            </th>
+                            <th>
+                                <span data-i18n="admin_users_th_phone_en">Phone</span>
+                                <span data-i18n="admin_users_th_phone_id" class="d-none">Telepon</span>
+                            </th>
+                            <th>
+                                <span data-i18n="admin_users_th_registered_en">Registered</span>
+                                <span data-i18n="admin_users_th_registered_id" class="d-none">Terdaftar</span>
+                            </th>
+                            <th>
+                                <span data-i18n="admin_users_th_status_en">Status</span>
+                                <span data-i18n="admin_users_th_status_id" class="d-none">Status</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr>
+                            <td>{{ user.id }}</td>
+                            <td>
+                                <strong class="text-dark">{{ user.name or user.email }}</strong>
+                            </td>
+                            <td>{{ user.email }}</td>
+                            
+                            <!-- PERBAIKAN KOLOM PERAN (ROLE) -->
+                            <td>
+                                {% if user.role == 'applicant' %}
+                                    <span class="badge rounded-pill bg-primary-subtle text-primary-emphasis">
+                                        <span data-i18n="role_applicant_en">Applicant</span>
+                                        <span data-i18n="role_applicant_id" class="d-none">Pelamar</span>
+                                    </span>
+                                {% elif user.role == 'company' %}
+                                    <span class="badge rounded-pill bg-success-subtle text-success-emphasis">
+                                        <span data-i18n="role_company_en">Company</span>
+                                        <span data-i18n="role_company_id" class="d-none">Perusahaan</span>
+                                    </span>
+                                {% elif user.role == 'admin' %}
+                                    <span class="badge rounded-pill bg-danger-subtle text-danger-emphasis">
+                                        <span data-i18n="role_admin_en">Admin</span>
+                                        <span data-i18n="role_admin_id" class="d-none">Admin</span>
+                                    </span>
+                                {% else %}
+                                    <span class="badge rounded-pill bg-secondary-subtle text-secondary-emphasis">
+                                        {{ user.role.capitalize() if user.role else 'N/A' }}
+                                    </span>
+                                {% endif %}
+                            </td>
+                            
+                            <td>{{ user.phone or 'N/A' }}</td>
+                            <td>{{ user.created_at.strftime('%Y-%m-%d') }}</td>
+                            
+                            <!-- PERBAIKAN KOLOM STATUS (menggunakan user.is_active) -->
+                            <td>
+                                {% if user.is_active %}
+                                    <span class="badge rounded-pill bg-success-subtle text-success-emphasis">
+                                        <span data-i18n="status_active_en">Active</span>
+                                        <span data-i18n="status_active_id" class="d-none">Aktif</span>
+                                    </span>
+                                {% else %}
+                                     <span class="badge rounded-pill bg-secondary-subtle text-secondary-emphasis">
+                                        <span data-i18n="status_inactive_en">Inactive</span>
+                                        <span data-i18n="status_inactive_id" class="d-none">Tidak Aktif</span>
+                                    </span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+    </div>
+</div>
+{% endblock %}

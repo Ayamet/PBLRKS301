@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}{{ company.company_name }} - NemuKerja{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0 rounded-3 mb-4">
+                <div class="card-body p-4 p-md-5">
+                    <h1 class="display-4 fw-bold text-dark mb-3">{{ company.company_name }}</h1>
+                    
+                    <div class="vstack gap-3 mb-4">
+                        <div class="d-flex align-items-center text-muted">
+                            <i class="fas fa-envelope text-primary me-3" style="width: 20px;"></i>
+                            <span>{{ company.contact_email }}</span>
+                        </div>
+                        {% if company.phone %}
+                        <div class="d-flex align-items-center text-muted">
+                            <i class="fas fa-phone text-primary me-3" style="width: 20px;"></i>
+                            <span>{{ company.phone }}</span>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <hr>
+
+                    <h5 class="fw-bold text-dark mt-4 mb-3">
+                        <span data-i18n="profile_about_company_en">About Company</span>
+                        <span data-i18n="profile_about_company_id" class="d-none">Tentang Perusahaan</span>
+                    </h5>
+                    <p style="white-space: pre-wrap;">{{ company.description or 'No description provided.' }}</p>
+                </div>
+            </div>
+
+            <h3 class="fw-bold text-dark mb-4">
+                <span data-i18n="profile_open_jobs_en">Open Jobs at {{ company.company_name }}</span>
+                <span data-i18n="profile_open_jobs_id" class="d-none">Lowongan di {{ company.company_name }}</span>
+            </h3>
+
+            {% if jobs %}
+                <div class="vstack gap-3">
+                    {% for job in jobs %}
+                    <div class="card shadow-sm border-0 rounded-3">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h5 class="card-title fw-bold text-dark mb-2">{{ job.title }}</h5>
+                                    <div class="card-subtitle text-muted small mb-2">
+                                        <i class="fas fa-map-marker-alt me-1"></i> {{ job.location }}
+                                    </div>
+                                    <div class="card-subtitle text-muted small">
+                                        <i class="fas fa-money-bill-wave me-1"></i>
+                                        {% if job.salary_min > 0 %}
+                                            Rp {{ "{:,.0f}".format(job.salary_min).replace(',', '.') }} - ...
+                                        {% else %}
+                                            <span data-i18n="salary_not_disclosed_en">Salary not disclosed</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-primary" onclick="showJobDetail('{{ job.id }}')">
+                                    <span data-i18n="index_view_details_en">View</span>
+                                    <span data-i18n="index_view_details_id" class="d-none">Lihat</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="card shadow-sm border-0 rounded-3">
+                    <div class="card-body p-5 text-center">
+                        <i class="fas fa-briefcase fa-2x text-muted mb-3"></i>
+                        <p class="text-muted mb-0">
+                            <span data-i18n="profile_no_open_jobs_en">This company has no open jobs at the moment.</span>
+                            <span data-i18n="profile_no_open_jobs_id" class="d-none">Perusahaan ini tidak memiliki lowongan terbuka saat ini.</span>
+                        </p>
+                    </div>
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+{% endblock %}

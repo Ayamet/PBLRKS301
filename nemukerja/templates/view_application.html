@@ -1,0 +1,221 @@
+{% extends "base.html" %}
+
+{% block title %}Application Details - NemuKerja{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow-sm border-0 rounded-3">
+                <div class="card-header bg-primary text-white p-4">
+                    <h4 class="mb-0">
+                        <span data-i18n="view_application_application_details_en">Application Details</span>
+                        <span data-i18n="view_application_application_details_id" class="d-none">Detail Lamaran</span>
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row mb-4 g-4">
+                        <div class="col-md-6">
+                            <div class="card h-100 shadow-sm border-0 rounded-3">
+                                <div class="card-header bg-light">
+                                    <h6 class="mb-0 fw-bold">
+                                        <span data-i18n="view_application_job_information_en">Job Information</span>
+                                        <span data-i18n="view_application_job_information_id" class="d-none">Informasi Pekerjaan</span>
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <p><strong>
+                                        <span data-i18n="view_application_job_title_en">Job Title:</span>
+                                        <span data-i18n="view_application_job_title_id" class="d-none">Judul Pekerjaan:</span>
+                                    </strong> {{ application.job.title }}</p>
+                                    <p><strong>
+                                        <span data-i18n="view_application_company_en">Company:</span>
+                                        <span data-i18n="view_application_company_id" class="d-none">Perusahaan:</span>
+                                    </strong> {{ application.job.company.company_name }}</p>
+                                    <p><strong>
+                                        <span data-i18n="view_application_location_en">Location:</span>
+                                        <span data-i18n="view_application_location_id" class="d-none">Lokasi:</span>
+                                    </strong> {{ application.job.location }}</p>
+                                    <p><strong>
+                                        <span data-i18n="view_application_available_slots_en">Available Slots:</span>
+                                        <span data-i18n="view_application_available_slots_id" class="d-none">Kuota Tersedia:</span>
+                                    </strong> {{ application.job.slots }}</p>
+                                    <p><strong>
+                                        <span data-i18n="view_application_current_applicants_en">Current Applicants:</span>
+                                        <span data-i18n="view_application_current_applicants_id" class="d-none">Pelamar Saat Ini:</span>
+                                    </strong> {{ application.job.applications|length }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card h-100 shadow-sm border-0 rounded-3">
+                                <div class="card-header bg-light">
+                                    <h6 class="mb-0 fw-bold">
+                                        <span data-i18n="view_application_applicant_information_en">Applicant Information</span>
+                                        <span data-i18n="view_application_applicant_information_id" class="d-none">Informasi Pelamar</span>
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <p><strong>
+                                        <span data-i18n="view_application_name_en">Name:</span>
+                                        <span data-i18n="view_application_name_id" class="d-none">Nama:</span>
+                                    </strong> {{ application.applicant.full_name }}</p>
+                                    <p><strong>
+                                        <span data-i18n="view_application_email_en">Email:</span>
+                                        <span data-i18n="view_application_email_id" class="d-none">Email:</span>
+                                    </strong> {{ application.applicant.user.email }}</p>
+                                    <p><strong>
+                                        <span data-i18n="view_application_applied_date_en">Applied Date:</span>
+                                        <span data-i18n="view_application_applied_date_id" class="d-none">Tanggal Lamar:</span>
+                                    </strong> {{ application.applied_at.strftime('%B %d, %Y at %H:%M') }}</p>
+                                    <p><strong>
+                                        <span data-i18n="view_application_current_status_en">Current Status:</span>
+                                        <span data-i18n="view_application_current_status_id" class="d-none">Status Saat Ini:</span>
+                                    </strong> 
+                                        <span class="badge {% if application.status == 'pending' %}bg-warning text-dark{% elif application.status == 'accepted' %}bg-success{% elif application.status == 'rejected' %}bg-danger{% else %}bg-secondary{% endif %}">
+
+                                            {% if application.status == 'accepted' %}
+                                                <span data-i18n="status_accepted_en">Accepted</span>
+                                                <span data-i18n="status_accepted_id" class="d-none">Diterima</span>
+                                            {% elif application.status == 'rejected' %}
+                                                <span data-i18n="status_rejected_en">Rejected</span>
+                                                <span data-i18n="status_rejected_id" class="d-none">Ditolak</span>
+                                            {% else %}
+                                                <span data-i18n="status_pending_en">Pending</span>
+                                                <span data-i18n="status_pending_id" class="d-none">Menunggu</span>
+                                            {% endif %}
+
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mb-4 shadow-sm border-0 rounded-3">
+                        <div class="card-header bg-light">
+                            <h6 class="mb-0 fw-bold">
+                                <span data-i18n="view_application_applicant_cv_en">Applicant CV</span>
+                                <span data-i18n="view_application_applicant_cv_id" class="d-none">CV Pelamar</span>
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            {% if application.applicant.cv_path %}
+                                <div class="d-flex flex-wrap justify-content-between align-items-center">
+                                    <div>
+                                        <i class="fas fa-file-pdf text-danger me-2"></i>
+                                        <span>CV_Applicant.pdf</span>
+                                        <small class="text-muted ms-2">
+                                            <span data-i18n="view_application_uploaded_during_application_en">(Uploaded during application)</span>
+                                            <span data-i18n="view_application_uploaded_during_application_id" class="d-none">(Diunggah saat melamar)</span>
+                                        </small>
+                                    </div>
+                                    <div class="mt-2 mt-md-0">
+                                        <a href="{{ url_for('view_cv', filename=application.applicant.cv_path) }}" 
+                                        target="_blank" class="btn btn-outline-primary btn-sm me-2">
+                                            <i class="fas fa-eye"></i> 
+                                            <span data-i18n="view_application_view_cv_en">View CV</span>
+                                            <span data-i18n="view_application_view_cv_id" class="d-none">Lihat CV</span>
+                                        </a>
+                                        <a href="{{ url_for('view_cv', filename=application.applicant.cv_path) }}" 
+                                        download class="btn btn-outline-success btn-sm">
+                                            <i class="fas fa-download"></i> 
+                                            <span data-i18n="view_application_download_cv_en">Download</span>
+                                            <span data-i18n="view_application_download_cv_id" class="d-none">Unduh</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <p class="text-muted">
+                                    <span data-i18n="view_application_no_cv_uploaded_en">No CV uploaded by applicant.</span>
+                                    <span data-i18n="view_application_no_cv_uploaded_id" class="d-none">Tidak ada CV yang diunggah oleh pelamar.</span>
+                                </p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="card shadow-sm border-0 rounded-3">
+                        <div class="card-header bg-light">
+                            <h6 class="mb-0 fw-bold">
+                                <span data-i18n="view_application_application_actions_en">Application Actions</span>
+                                <span data-i18n="view_application_application_actions_id" class="d-none">Aksi Lamaran</span>
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            
+                            <div class="d-flex flex-wrap justify-content-between align-items-center">
+                                
+                                <div class="d-flex gap-2 mb-3 mb-md-0">
+                                    {% if application.status == 'pending' %}
+                                        <form method="POST" action="{{ url_for('accept_application', application_id=application.id) }}" class="d-inline">
+                                            <button type="submit" class="btn btn-success btn-lg" onclick="return confirm('Are you sure you want to ACCEPT this application?')">
+                                                <i class="fas fa-check-circle me-1"></i> 
+                                                <span data-i18n="view_application_accept_application_en">Accept Application</span>
+                                                <span data-i18n="view_application_accept_application_id" class="d-none">Terima Lamaran</span>
+                                            </button>
+                                        </form>
+                                        <form method="POST" action="{{ url_for('reject_application', application_id=application.id) }}" class="d-inline">
+                                            <button type="submit" class="btn btn-danger btn-lg" onclick="return confirm('Are you sure you want to REJECT this application?')">
+                                                <i class="fas fa-times-circle me-1"></i> 
+                                                <span data-i18n="view_application_reject_application_en">Reject Application</span>
+                                                <span data-i18n="view_application_reject_application_id" class="d-none">Tolak Lamaran</span>
+                                            </button>
+                                        </form>
+                                    {% elif application.status == 'accepted' %}
+                                        <span class="badge bg-success p-2 me-2 fs-6">
+                                            <i class="fas fa-check-circle me-1"></i> 
+                                            <span data-i18n="view_application_accepted_en">Accepted</span>
+                                            <span data-i18n="view_application_accepted_id" class="d-none">Diterima</span>
+                                        </span>
+                                        <form method="POST" action="{{ url_for('reject_application', application_id=application.id) }}" class="d-inline">
+                                            <button type="submit" class="btn btn-warning" onclick="return confirm('Are you sure you want to change this application to REJECTED?')">
+                                                <i class="fas fa-times-circle me-1"></i> 
+                                                <span data-i18n="view_application_change_to_rejected_en">Change to Rejected</span>
+                                                <span data-i18n="view_application_change_to_rejected_id" class="d-none">Ubah ke Ditolak</span>
+                                            </button>
+                                        </form>
+                                    {% elif application.status == 'rejected' %}
+                                        <span class="badge bg-danger p-2 me-2 fs-6">
+                                            <i class="fas fa-times-circle me-1"></i> 
+                                            <span data-i18n="view_application_rejected_en">Rejected</span>
+                                            <span data-i18n="view_application_rejected_id" class="d-none">Ditolak</span>
+                                        </span>
+                                        <form method="POST" action="{{ url_for('accept_application', application_id=application.id) }}" class="d-inline">
+                                            <button type="submit" class="btn btn-success" onclick="return confirm('Are you sure you want to change this application to ACCEPTED?')">
+                                                <i class="fas fa-check-circle me-1"></i> 
+                                                <span data-i18n="view_application_change_to_accepted_en">Change to Accepted</span>
+                                                <span data-i18n="view_application_change_to_accepted_id" class="d-none">Ubah ke Diterima</span>
+                                            </button>
+                                        </form>
+                                    {% endif %}
+                                </div>
+
+                                <div class="d-flex gap-2">
+                                    <a href="{{ url_for('company_applications') }}" class="btn btn-secondary">
+                                        <i class="fas fa-arrow-left me-1"></i> 
+                                        <span data-i18n="view_application_back_to_applications_en">Back</span>
+                                        <span data-i18n="view_application_back_to_applications_id" class="d-none">Kembali</span>
+                                    </a>
+                                    <a href="{{ url_for('dashboard') }}" class="btn btn-outline-primary">
+                                        <i class="fas fa-home me-1"></i> 
+                                        <span data-i18n="view_application_dashboard_en">Dashboard</span>
+                                        <span data-i18n="view_application_dashboard_id" class="d-none">Dasbor</span>
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            {% if application.status == 'pending' %}
+                                <div class="alert alert-info mt-3">
+                                    <i class="fas fa-info-circle me-1"></i> 
+                                    <span data-i18n="view_application_pending_review_en">This application is pending review. You can accept or reject it.</span>
+                                    <span data-i18n="view_application_pending_review_id" class="d-none">Lamaran ini menunggu tinjauan. Anda dapat menerima atau menolaknya.</span>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

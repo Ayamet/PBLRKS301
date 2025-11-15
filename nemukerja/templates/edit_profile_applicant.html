@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Profile - NemuKerja{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0 rounded-3">
+                <div class="card-body p-4 p-md-5">
+
+                    <h2 class="display-5 fw-bold text-dark mb-4">
+                        <span data-i18n="profile_edit_profile_en">Edit Profile</span>
+                        <span data-i18n="profile_edit_profile_id" class="d-none">Ubah Profil</span>
+                    </h2>
+                    
+                    <form method="POST" novalidate>
+                        {{ form.hidden_tag() }}
+
+                        <div class="mb-3">
+                            <!-- FIX: Menggunakan label manual untuk terjemahan -->
+                            <label class="form-label" for="full_name">
+                                <span data-i18n="profile_full_name_en">Full Name</span>
+                                <span data-i18n="profile_full_name_id" class="d-none">Nama Lengkap</span>
+                            </label>
+                            {{ form.full_name(class="form-control form-control-lg", id="full_name") }}
+                            {% if form.full_name.errors %}
+                                <div class="text-danger small mt-1">
+                                    {% for error in form.full_name.errors %}<span>{{ error }}</span>{% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <!-- FIX: Menggunakan label manual untuk terjemahan -->
+                            <label class="form-label" for="phone">
+                                <span data-i18n="profile_phone_en">Phone Number</span>
+                                <span data-i18n="profile_phone_id" class="d-none">Nomor Telepon</span>
+                            </label>
+                            {{ form.phone(class="form-control", placeholder="e.g., 08123456789", id="phone") }}
+                            {% if form.phone.errors %}
+                                <div class="text-danger small mt-1">
+                                    {% for error in form.phone.errors %}<span>{{ error }}</span>{% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <!-- FIX: Menggunakan label manual untuk terjemahan -->
+                            <label class="form-label" for="skills">
+                                <span data-i18n="profile_skills_en">Skills</span>
+                                <span data-i18n="profile_skills_id" class="d-none">Keahlian</span>
+                            </label>
+                            <!-- FIX: Menerjemahkan deskripsi -->
+                            <small class="text-muted d-block mb-1">
+                                <span data-i18n="profile_skills_desc_en">List your skills separated by commas (e.g., Python, Flask, UI/UX Design)</span>
+                                <span data-i18n="profile_skills_desc_id" class="d-none">Tulis keahlian Anda, pisahkan dengan koma (cth: Python, Flask, Desain UI/UX)</span>
+                            </small>
+                            {{ form.skills(class="form-control", rows="5", id="skills") }}
+                            {% if form.skills.errors %}
+                                <div class="text-danger small mt-1">
+                                    {% for error in form.skills.errors %}<span>{{ error }}</span>{% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="d-flex gap-2 mt-4">
+                            {{ form.submit(class="btn btn-primary btn-lg", **{'data-i18n-value-en': 'Save Changes', 'data-i18n-value-id': 'Simpan Perubahan'}) }}
+                            <a href="{{ url_for('profile') }}" class="btn btn-outline-secondary btn-lg">
+                                <span data-i18n="profile_cancel_en">Cancel</span>
+                                <span data-i18n="profile_cancel_id" class="d-none">Batal</span>
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

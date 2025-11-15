@@ -1,0 +1,113 @@
+===================================================== PANDUAN SETUP LOKAL PROYEK NEMUKERJA
+
+Selamat datang di proyek NemuKerja! Berikut adalah langkah-langkah untuk menjalankan aplikasi ini di komputer Anda dari awal.
+
+1. Buat Virtual Environment (vEnv)
+
+Setelah Anda melakukan git pull atau menyalin folder proyek, buka terminal di dalam folder utama proyek (nemukerja/).
+
+Buat virtual environment baru bernama .venv:
+
+python -m venv .venv
+
+
+2. Aktifkan vEnv
+
+Selanjutnya, aktifkan environment tersebut (Anda harus melakukan ini setiap kali membuka terminal baru):
+
+.\.venv\Scripts\Activate.ps1
+
+
+(Prompt terminal Anda sekarang seharusnya diawali dengan (.venv))
+
+3. Install Semua Kebutuhan (Dependencies)
+
+Install semua library Python yang dibutuhkan proyek ini dari file requirements.txt:
+
+pip install -r nemukerja\requirements.txt
+
+
+4. Buat File Kunci Rahasia (.flaskenv) (PENTING!)
+
+Proyek ini tidak akan berjalan tanpa file ini. File ini sengaja tidak ada di GitHub untuk keamanan.
+
+Buat file baru di folder utama proyek (sejajar dengan run.py).
+
+Beri nama file tersebut: .flaskenv
+
+5. Isi File .flaskenv Anda
+
+Buka file .flaskenv yang baru saja Anda buat dan salin-tempelkan template di bawah ini, lalu isi bagian yang diperlukan:
+
+1. Untuk Menjalankan Flask
+
+FLASK_APP=run.py
+
+2. Kunci Enkripsi (Wajib)
+
+SECRET_KEY=ISI_DENGAN_KUNCI_ACAK_ANDA
+
+3. Kredensial Email (Wajib untuk Reset Password)
+
+MAIL_USERNAME=ISI_DENGAN_GMAIL_ANDA MAIL_PASSWORD=ISI_DENGAN_SANDI_APLIKASI_16_DIGIT_ANDA
+
+Cara mengisi file di atas:
+
+SECRET_KEY:
+
+Buka terminal (.venv harus aktif).
+
+Jalankan perintah ini: python -c "import secrets; print(secrets.token_hex(32))"
+
+Salin hasil string acak yang panjang itu dan tempelkan sebagai nilai SECRET_KEY.
+
+MAIL_USERNAME:
+
+Isi dengan akun Gmail Anda sendiri (Contoh: email.teman.anda@gmail.com).
+
+MAIL_PASSWORD: (Ini BUKAN password Gmail biasa Anda)
+
+Buka myaccount.google.com dengan akun Gmail di atas.
+
+Pergi ke Keamanan.
+
+Aktifkan Verifikasi 2 Langkah (Wajib).
+
+Kembali ke Keamanan, klik Sandi Aplikasi (App Passwords).
+
+Pilih "Email" untuk aplikasi dan "Lainnya (Nama kustom...)".
+
+Beri nama (misal: "NemuKerja Test").
+
+Google akan memberi Anda sandi 16 digit. Salin sandi itu (tanpa spasi) dan tempelkan sebagai nilai MAIL_PASSWORD.
+
+6. Siapkan Database (Migrasi)
+
+Jangan impor file .sql lama! Kita akan membangun database yang up-to-date dari awal.
+
+Buat Database Kosong:
+Buka phpMyAdmin (atau XAMPP) dan buat database kosong baru. Pastikan namanya sesuai dengan yang ada di nemukerja/config.py (defaultnya adalah nemukerja_db).
+
+Jalankan Migrasi:
+Kembali ke terminal Anda (pastikan .venv aktif). Jalankan perintah upgrade. Ini akan membaca semua file di folder migrations/ dan secara otomatis membuat SEMUA tabel dan kolom (termasuk salary, phone, status ENUM yang baru, dll.)
+
+flask db upgrade
+
+
+Setelah ini, database Anda akan 100% sinkron dengan kode terbaru.
+
+7. (Opsional) Buat Akun Admin
+
+Untuk membuat akun admin pertama Anda, jalankan perintah ini di terminal:
+
+flask create-admin namamu@email.com password_aman_anda
+
+
+8. Jalankan Aplikasi!
+
+Semua sudah siap. Jalankan server:
+
+flask run --debug
+
+
+Aplikasi sekarang akan berjalan di http://127.0.0.1:5000 dan semua fitur akan berfungsi.

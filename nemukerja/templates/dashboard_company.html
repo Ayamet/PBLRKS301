@@ -1,0 +1,284 @@
+{% extends "base.html" %}
+
+{% block title %}Company Dashboard - NemuKerja{% endblock %}
+
+{% block content %}
+<div class="container">
+    
+    <!-- Judul Halaman -->
+    <div class="text-center mb-5">
+        <h2 class="display-4 fw-bold text-dark">
+            <span data-i18n="dashboard_company_company_dashboard_en">Company Dashboard</span>
+            <span data-i18n="dashboard_company_company_dashboard_id" class="d-none">Dasbor Perusahaan</span>
+        </h2>
+        <p class="lead text-muted">
+            <span data-i18n="dashboard_company_manage_jobs_en">Manage your job postings and applications</span>
+            <span data-i18n="dashboard_company_manage_jobs_id" class="d-none">Kelola lowongan dan lamaran Anda</span>
+        </p>
+    </div>
+
+    <!-- Statistik (Ukuran Diperkecil) -->
+    <div class="row g-4 mb-5">
+        
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0 rounded-3 text-center p-3" style="background-color: #e6f0ff;">
+                <div class="card-body d-flex flex-column justify-content-center">
+                    <div class="d-inline-flex align-items-center justify-content-center bg-primary text-white rounded-circle mb-3 mx-auto" style="width: 50px; height: 50px;">
+                        <i class="fas fa-briefcase fs-5"></i>
+                    </div>
+                    <h3 class="display-5 fw-bold text-dark mb-1">{{ total_jobs }}</h3>
+                    <p class="fs-6 text-muted mb-0">
+                        <span data-i18n="dashboard_company_total_jobs_posted_en">Total Jobs Posted</span>
+                        <span data-i18n="dashboard_company_total_jobs_posted_id" class="d-none">Total Pekerjaan Diposting</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0 rounded-3 text-center p-3" style="background-color: #e6f9f0;">
+                <div class="card-body d-flex flex-column justify-content-center">
+                    <div class="d-inline-flex align-items-center justify-content-center bg-success text-white rounded-circle mb-3 mx-auto" style="width: 50px; height: 50px;">
+                        <i class="fas fa-users fs-5"></i>
+                    </div>
+                    <h3 class="display-5 fw-bold text-dark mb-1">{{ total_applications }}</h3>
+                    <p class="fs-6 text-muted mb-0">
+                        <span data-i18n="dashboard_company_total_applications_en">Total Applications</span>
+                        <span data-i18n="dashboard_company_total_applications_id" class="d-none">Total Lamaran</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0 rounded-3 p-3" style="background-color: #f0e6ff;">
+                <div class="card-body d-flex align-items-center justify-content-center">
+                    <a href="{{ url_for('add_job') }}" class="btn btn-lg d-flex align-items-center" style="background-color: #6f42c1; border:none; color: white;">
+                        <div class="d-inline-flex align-items-center justify-content-center bg-white text-purple rounded-circle me-3" style="width: 40px; height: 40px; color: #6f42c1;">
+                            <i class="fas fa-plus fs-5"></i>
+                        </div>
+                        <span class="fw-bold">
+                            <span data-i18n="dashboard_company_post_new_job_en">Post New Job</span>
+                            <span data-i18n="dashboard_company_post_new_job_id" class="d-none">Posting Pekerjaan Baru</span>
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Daftar Lowongan Anda -->
+    <div class="mb-5">
+        <h3 class="fw-bold text-dark mb-4">
+            <span data-i18n="dashboard_company_your_job_postings_en">Your Job Postings</span>
+            <span data-i18n="dashboard_company_your_job_postings_id" class="d-none">Pekerjaan yang Diposting</span>
+        </h3>
+
+        {% if jobs_pagination.items %}
+            <div class="row g-4">
+                {% for job in jobs_pagination.items %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 shadow-sm border-0 rounded-3">
+                        <div class="card-body p-4 d-flex flex-column">
+                            <div class="mb-3">
+                                <h5 class="card-title fw-bold text-dark mb-2">{{ job.title }}</h5>
+                                <h6 class="card-subtitle text-muted d-flex align-items-center mb-3">
+                                    <i class="fas fa-building text-muted me-2"></i>
+                                    {{ job.company.company_name }}
+                                </h6>
+                                <span class="badge bg-primary-subtle text-primary-emphasis rounded-pill">
+                                    {{ job.applications|length }} 
+                                    <span data-i18n="dashboard_company_applicants_en">applicants</span>
+                                    <span data-i18n="dashboard_company_applicants_id" class="d-none">pelamar</span>
+                                </span>
+                            </div>
+                            
+                            <div class="vstack gap-2 mb-4">
+                                <div class="d-flex align-items-center text-muted small">
+                                    <i class="fas fa-map-marker-alt text-primary me-2" style="width: 1rem;"></i>
+                                    <span>{{ job.location }}</span>
+                                </div>
+                                <div class="d-flex align-items-center text-muted small">
+                                    <i class="fas fa-money-bill-wave text-success me-2" style="width: 1rem;"></i>
+                                    <span>
+                                        {% if job.salary_min > 0 and job.salary_max > 0 %}
+                                            Rp {{ "{:,.0f}".format(job.salary_min).replace(',', '.') }} - Rp {{ "{:,.0f}".format(job.salary_max).replace(',', '.') }}
+                                        {% elif job.salary_min > 0 %}
+                                            <span data-i18n="salary_from_en">From</span><span data-i18n="salary_from_id" class="d-none">Mulai dari</span> Rp {{ "{:,.0f}".format(job.salary_min).replace(',', '.') }}
+                                        {% elif job.salary_max > 0 %}
+                                            <span data-i18n="salary_upto_en">Up to</span><span data-i18n="salary_upto_id" class="d-none">Hingga</span> Rp {{ "{:,.0f}".format(job.salary_max).replace(',', '.') }}
+                                        {% else %}
+                                            <span data-i18n="salary_not_disclosed_en">Salary not disclosed</span><span data-i18n="salary_not_disclosed_id" class="d-none">Gaji tidak ditampilkan</span>
+                                        {% endif %}
+                                    </span>
+                                </div>
+                                <div class="d-flex align-items-center text-muted small">
+                                    <i class="fas fa-calendar text-primary me-2" style="width: 1rem;"></i>
+                                    <span>{{ job.posted_at.strftime('%B %d, %Y') if job.posted_at else 'N/A' }}</span>
+                                </div>
+                                <div class="d-flex align-items-center text-muted small">
+                                    <i class="fas fa-power-off me-2 {% if job.is_open %}text-success{% else %}text-danger{% endif %}" style="width: 1rem;"></i>
+                                    <span>Status: 
+                                        <strong class="{% if job.is_open %}text-success{% else %}text-danger{% endif %}">
+                                            {% if job.is_open %}
+                                                <span data-i18n="status_open_en">Open</span>
+                                                <span data-i18n="status_open_id" class="d-none">Dibuka</span>
+                                            {% else %}
+                                                <span data-i18n="status_closed_en">Closed</span>
+                                                <span data-i18n="status_closed_id" class="d-none">Ditutup</span>
+                                            {% endif %}
+                                        </strong>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Tombol (menggunakan 'mt-auto' untuk mendorong ke bawah) -->
+                            <div class="mt-auto">
+                                <div class="d-flex gap-2 mb-2">
+                                    <button type="button" class="btn btn-outline-primary w-50" onclick="showJobDetail('{{ job.id }}')">
+                                        <i class="fas fa-eye me-1"></i>
+                                        <span data-i18n="dashboard_company_view_en">View</span>
+                                        <span data-i18n="dashboard_company_view_id" class="d-none">Lihat</span>
+                                    </button>
+                                    <!-- FIX: Terjemahan ditambahkan di sini -->
+                                    <a href="{{ url_for('edit_job', job_id=job.id) }}" class="btn btn-outline-secondary w-50">
+                                        <i class="fas fa-edit me-1"></i>
+                                        <span data-i18n="dashboard_company_edit_en">Edit</span>
+                                        <span data-i18n="dashboard_company_edit_id" class="d-none">Ubah</span>
+                                    </a>
+                                </div>
+                                <div class="d-flex gap-2">
+                                    {% if job.is_open %}
+                                    <form method="POST" action="{{ url_for('close_job', job_id=job.id) }}" class="w-50">
+                                        <button type="submit" onclick="return confirm('Are you sure you want to close this job?')" class="btn btn-outline-warning w-100">
+                                            <i class="fas fa-times-circle me-1"></i>
+                                            <!-- FIX: Terjemahan ditambahkan di sini -->
+                                            <span data-i18n="dashboard_company_close_en">Close</span>
+                                            <span data-i18n="dashboard_company_close_id" class="d-none">Tutup</span>
+                                        </button>
+                                    </form>
+                                    {% else %}
+                                    <form method="POST" action="{{ url_for('open_job', job_id=job.id) }}" class="w-50">
+                                        <button type="submit" onclick="return confirm('Are you sure you want to reopen this job?')" class="btn btn-outline-success w-100">
+                                            <i class="fas fa-check-circle me-1"></i>
+                                            <!-- FIX: Terjemahan ditambahkan di sini -->
+                                            <span data-i18n="dashboard_company_reopen_en">Reopen</span>
+                                            <span data-i18n="dashboard_company_reopen_id" class="d-none">Buka Lagi</span>
+                                        </button>
+                                    </form>
+                                    {% endif %}
+                                    
+                                    <form method="POST" action="{{ url_for('delete_job', job_id=job.id) }}" class="w-50">
+                                        <button type="submit" {% if job.is_open %}disabled title="Close job first to delete"{% endif %} 
+                                                onclick="return confirm('WARNING: Are you absolutely sure? This cannot be undone.')"
+                                                class="btn btn-outline-danger w-100 {% if job.is_open %}disabled{% endif %}">
+                                            <i class="fas fa-trash-alt me-1"></i>
+                                            <!-- FIX: Terjemahan ditambahkan di sini -->
+                                            <span data-i18n="dashboard_company_delete_en">Delete</span>
+                                            <span data-i18n="dashboard_company_delete_id" class="d-none">Hapus</span>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            {% set pagination = jobs_pagination %}
+            {% include '_pagination.html' %}
+
+        {% else %}
+            <div class="card text-center py-5 shadow-sm border-0 rounded-3">
+                <div class="card-body">
+                    <i class="fas fa-briefcase fa-3x text-muted mb-4"></i>
+                    <h4 class="fw-bold text-dark mb-3">
+                        <span data-i18n="dashboard_company_no_jobs_posted_yet_en">No Jobs Posted Yet</span>
+                        <span data-i18n="dashboard_company_no_jobs_posted_yet_id" class="d-none">Belum Ada Pekerjaan Diposting</span>
+                    </h4>
+                    <p class="text-muted mb-4">
+                        <span data-i18n="dashboard_company_you_haven_t_posted_any_job_openings_yet_start_by_posting_your_first_job_en">You haven't posted any job openings yet. Start by posting your first job!</span>
+                        <span data-i18n="dashboard_company_you_haven_t_posted_any_job_openings_yet_start_by_posting_your_first_job_id" class="d-none">Anda belum memposting lowongan pekerjaan apa pun.</span>
+                    </p>
+                    <a href="{{ url_for('add_job') }}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-plus me-2"></i>
+                        <span data-i18n="dashboard_company_post_your_first_job_en">Post Your First Job</span>
+                        <span data-i18n="dashboard_company_post_your_first_job_id" class="d-none">Posting Pekerjaan Pertama Anda</span>
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Lamaran Terbaru -->
+    {% if recent_applications %}
+    <div class="mt-5">
+        <h3 class="fw-bold text-dark mb-4">
+            <span data-i18n="dashboard_company_recent_applications_en">Recent Applications</span>
+            <span data-i18n="dashboard_company_recent_applications_id" class="d-none">Lamaran Terbaru</span>
+        </h3>
+        <div class="card shadow-sm border-0 rounded-3">
+            <div class="card-body p-4">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col"><span data-i18n="dashboard_company_job_title_en">Job Title</span><span data-i18n="dashboard_company_job_title_id" class="d-none">Judul Pekerjaan</span></th>
+                                <th scope="col"><span data-i18n="dashboard_company_applicant_name_en">Applicant Name</span><span data-i18n="dashboard_company_applicant_name_id" class="d-none">Nama Pelamar</span></th>
+                                <th scope="col"><span data-i18n="dashboard_company_applied_date_en">Applied Date</span><span data-i18n="dashboard_company_applied_date_id" class="d-none">Tanggal Lamar</span></th>
+                                <th scope="col"><span data-i18n="dashboard_company_status_en">Status</span><span data-i18n="dashboard_company_status_id" class="d-none">Status</span></th>
+                                <th scope="col"><span data-i18n="dashboard_company_action_en">Action</span><span data-i18n="dashboard_company_action_id" class="d-none">Aksi</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for application in recent_applications %}
+                            <tr>
+                                <td class="fw-medium text-dark">{{ application.job.title }}</td>
+                                <td class="text-muted">{{ application.applicant.full_name }}</td>
+                                <td class="text-muted">{{ application.applied_at.strftime('%Y-%m-%d') if application.applied_at else 'N/A' }}</td>
+                                <td>
+                                    <!-- Ini sudah diperbaiki di langkah sebelumnya -->
+                                    <span class="badge rounded-pill
+                                        {% if application.status == 'pending' %}bg-warning-subtle text-warning-emphasis
+                                        {% elif application.status == 'accepted' %}bg-success-subtle text-success-emphasis
+                                        {% elif application.status == 'rejected' %}bg-danger-subtle text-danger-emphasis
+                                        {% else %}bg-secondary-subtle text-secondary-emphasis{% endif %}">
+                                        
+                                        {% if application.status == 'accepted' %}
+                                            <span data-i18n="status_accepted_en">Accepted</span>
+                                            <span data-i18n="status_accepted_id" class="d-none">Diterima</span>
+                                        {% elif application.status == 'rejected' %}
+                                            <span data-i18n="status_rejected_en">Rejected</span>
+                                            <span data-i18n="status_rejected_id" class="d-none">Ditolak</span>
+                                        {% else %}
+                                            <span data-i18n="status_pending_en">Pending</span>
+                                            <span data-i18n="status_pending_id" class="d-none">Menunggu</span>
+                                        {% endif %}
+                                    </span>
+                                </td>
+                                <td>
+                                    <a href="{{ url_for('view_application', application_id=application.id) }}" class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-eye me-1"></i>
+                                        <span data-i18n="dashboard_company_view_en">View</span>
+                                        <span data-i18n="dashboard_company_view_id" class="d-none">Lihat</span>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="text-center mt-4">
+                    <a href="{{ url_for('company_applications') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-list me-2"></i>
+                        <span data-i18n="dashboard_company_view_all_applications_en">View All Applications</span>
+                        <span data-i18n="dashboard_company_view_all_applications_id" class="d-none">Lihat Semua Lamaran</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

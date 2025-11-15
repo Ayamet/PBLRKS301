@@ -1,0 +1,69 @@
+<div class="container mb-4 p-4 border rounded shadow-sm bg-light">
+    <form method="GET" action="{{ url_for(request.endpoint) }}">
+        <div class="row g-3 align-items-end">
+            
+            <div class="col-lg-3 col-md-6">
+                <label for="q" class="form-label fw-bold">
+                    <span data-i18n="filter_keyword_en">Keyword</span>
+                    <span data-i18n="filter_keyword_id" class="d-none">Kata Kunci</span>
+                </label>
+                <!-- PERBAIKAN: Menggunakan atribut data-i18n-placeholder-* -->
+                <input type="text" class="form-control" id="q" name="q" 
+                       data-i18n-placeholder-en="Job title, description..."
+                       data-i18n-placeholder-id="Judul pekerjaan, deskripsi..."
+                       value="{{ request.args.get('q', '') }}">
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <label for="location" class="form-label fw-bold">
+                    <span data-i18n="filter_location_en">Location</span>
+                    <span data-i18n="filter_location_id" class="d-none">Lokasi</span>
+                </label>
+                <!-- PERBAIKAN: Menggunakan atribut data-i18n-placeholder-* -->
+                <input type="text" class="form-control" id="location" name="location" 
+                       data-i18n-placeholder-en="e.g., Batam, Jakarta..."
+                       data-i18n-placeholder-id="cth., Batam, Jakarta..."
+                       value="{{ request.args.get('location', '') }}">
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <label for="company" class="form-label fw-bold">
+                    <span data-i18n="filter_company_en">Company</span>
+                    <span data-i18n="filter_company_id" class="d-none">Perusahaan</span>
+                </label>
+                <!-- PERBAIKAN: Menggunakan atribut data-i18n-placeholder-* -->
+                <input type="text" class="form-control" id="company" name="company" 
+                       data-i18n-placeholder-en="Company name..."
+                       data-i18n-placeholder-id="Nama perusahaan..."
+                       value="{{ request.args.get('company', '') }}">
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <label for="salary" class="form-label fw-bold">
+                    <span data-i18n="filter_salary_en">Minimum Salary (IDR)</span>
+                    <span data-i18n="filter_salary_id" class="d-none">Gaji Minimum (IDR)</span>
+                </label>
+                <!-- PERBAIKAN: Menggunakan atribut data-i18n-placeholder-* -->
+                <input type="number" class="form-control" id="salary" name="salary" 
+                       data-i18n-placeholder-en="e.g., 5000000"
+                       data-i18n-placeholder-id="cth., 5000000"
+                       value="{{ request.args.get('salary', '') }}">
+            </div>
+        </div>
+        
+        <div class="row mt-3">
+            <div class="col-12 d-flex justify-content-end gap-2">
+                <a href="{{ url_for(request.endpoint) }}" class="btn btn-outline-secondary">
+                    <i class="fas fa-times me-1"></i>
+                    <span data-i18n="filter_reset_en">Reset</span>
+                    <span data-i18n="filter_reset_id" class="d-none">Atur Ulang</span>
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-search me-1"></i> 
+                    <span data-i18n="filter_search_en">Search Jobs</span>
+                    <span data-i18n="filter_search_id" class="d-none">Cari Pekerjaan</span>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

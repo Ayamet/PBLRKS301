@@ -1,0 +1,339 @@
+{% extends "base.html" %}
+
+{% block title %}Contact Us - NemuKerja{% endblock %}
+
+{% block content %}
+<div class="container contact-page px-4">
+
+    <div class="row mb-4">
+        <div class="col-12 text-center">
+            <h1 class="display-4 fw-bold text-primary mb-2">
+                <span data-i18n="header_contact_en">Contact Us</span>
+                <span data-i18n="header_contact_id" class="d-none">Hubungi Kami</span>
+            </h1>
+            <p class="lead text-muted">
+                <span data-i18n="sub_contact_en">We are here to help you find your dream job or the right candidate</span>
+                <span data-i18n="sub_contact_id" class="d-none">Kami siap membantu Anda menemukan pekerjaan impian atau kandidat yang tepat</span>
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4 mb-4">
+            <div class="card card-sm border-0 shadow-sm h-100">
+                <div class="card-body p-4 d-flex flex-column">
+                    <div class="w-100 text-center mb-3">
+                        <div class="d-flex justify-content-center">
+                            <img src="{{ url_for('static', filename='images/logopeb.png') }}" alt="NemuKerja Logo" width="150" class="mb-2">
+                        </div>
+                    </div>
+
+                    <h4 class="card-title text-center">
+                        <span data-i18n="get_in_touch_en">Get in Touch</span>
+                        <span data-i18n="get_in_touch_id" class="d-none">Hubungi Kami</span>
+                    </h4>
+                    <p class="text-muted text-center">
+                        <span data-i18n="get_in_touch_sub_en">We are always ready to assist with any inquiries</span>
+                        <span data-i18n="get_in_touch_sub_id" class="d-none">Kami selalu siap membantu dengan pertanyaan apa pun</span>
+                    </p>
+
+                    <div class="contact-info mt-auto">
+                        <div class="contact-item modern-card mb-4">
+                            <div class="contact-icon-wrapper">
+                                <div class="modern-icon bg-gradient-primary">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                            </div>
+                            <div class="contact-content">
+                                <h6 class="contact-title">
+                                    <span data-i18n="addr_en">Address</span>
+                                    <span data-i18n="addr_id" class="d-none">Alamat</span>
+                                </h6>
+                                <p class="contact-detail">Batam<br>Indonesia</p>
+                            </div>
+                        </div>
+
+                        <div class="contact-item modern-card mb-4">
+                            <div class="contact-icon-wrapper">
+                                <div class="modern-icon bg-gradient-success">
+                                    <i class="fas fa-phone"></i>
+                                </div>
+                            </div>
+                            <div class="contact-content">
+                                <h6 class="contact-title">
+                                    <span data-i18n="phone_en">Phone</span>
+                                    <span data-i18n="phone_id" class="d-none">Telepon</span>
+                                </h6>
+                                <p class="contact-detail">+62 0813 6464 7725</p>
+                            </div>
+                        </div>
+
+                        <div class="contact-item modern-card mb-4">
+                            <div class="contact-icon-wrapper">
+                                <div class="modern-icon bg-gradient-info">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                            </div>
+                            <div class="contact-content">
+                                <h6 class="contact-title">
+                                    <span data-i18n="email_en">Email</span>
+                                    <span data-i18n="email_id" class="d-none">Email</span>
+                                </h6>
+                                <p class="contact-detail">support@nemukerja.com</p>
+                            </div>
+                        </div>
+
+                        <div class="contact-item modern-card">
+                            <div class="contact-icon-wrapper">
+                                <div class="modern-icon bg-gradient-warning">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                            </div>
+                            <div class="contact-content">
+                                <h6 class="contact-title">
+                                    <span data-i18n="hours_en">Working Hours</span>
+                                    <span data-i18n="hours_id" class="d-none">Jam Kerja</span>
+                                </h6>
+                                <p class="contact-detail">
+                                    <span data-i18n="hours_time_en">Mon - Fri: 9:00 AM - 6:00 PM<br>Sat: 9:00 AM - 2:00 PM</span>
+                                    <span data-i18n="hours_time_id" class="d-none">Sen - Jum: 9:00 - 18:00<br>Sab: 9:00 - 14:00</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8 mb-4">
+            <div class="card card-sm border-0 shadow-sm h-100">
+                <div class="card-body p-4 d-flex flex-column">
+                    <h4 class="card-title mb-3">
+                        <span data-i18n="send_msg_en">Send a Message</span>
+                        <span data-i18n="send_msg_id" class="d-none">Kirim Pesan</span>
+                    </h4>
+                    <form id="contactForm" class="flex-grow-1 d-flex flex-column">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="firstName" class="form-label">
+                                    <span data-i18n="first_name_en">First Name *</span>
+                                    <span data-i18n="first_name_id" class="d-none">Nama Depan *</span>
+                                </label>
+                                <input type="text" class="form-control" id="firstName" required
+                                       placeholder="" 
+                                       data-i18n-placeholder-en="First Name *"
+                                       data-i18n-placeholder-id="Nama Depan *">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="lastName" class="form-label">
+                                    <span data-i18n="last_name_en">Last Name *</span>
+                                    <span data-i18n="last_name_id" class="d-none">Nama Belakang *</span>
+                                </label>
+                                <input type="text" class="form-control" id="lastName" required
+                                       placeholder="" 
+                                       data-i18n-placeholder-en="Last Name *"
+                                       data-i18n-placeholder-id="Nama Belakang *">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label">
+                                    <span data-i18n="email_label_en">Email Address *</span>
+                                    <span data-i18n="email_label_id" class="d-none">Alamat Email *</span>
+                                </label>
+                                <input type="email" class="form-control" id="email" required
+                                       placeholder="" 
+                                       data-i18n-placeholder-en="Enter your email"
+                                       data-i18n-placeholder-id="Masukkan email Anda">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="phone" class="form-label">
+                                    <span data-i18n="phone_label_en">Phone Number</span>
+                                    <span data-i18n="phone_label_id" class="d-none">Nomor Telepon</span>
+                                </label>
+                                <input type="tel" class="form-control" id="phone"
+                                       placeholder="" 
+                                       data-i18n-placeholder-en="Phone Number (Optional)"
+                                       data-i18n-placeholder-id="Nomor Telepon (Opsional)">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="subject" class="form-label">
+                                <span data-i18n="subject_en">Subject *</span>
+                                <span data-i18n="subject_id" class="d-none">Subjek *</span>
+                            </label>
+                            
+                            <select class="form-select" id="subject" required>
+                                <option value="" selected disabled>Select subject</option>
+                                <option value="general">General Inquiry</option>
+                                <option value="technical">Technical Support</option>
+                                <option value="partnership">Partnership Opportunities</option>
+                                <option value="career">Career Questions</option>
+                                <option value="feedback">Feedback & Suggestions</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3 flex-grow-1">
+                            <label for="message" class="form-label">
+                                <span data-i18n="message_en">Message *</span>
+                                <span data-i18n="message_id" class="d-none">Pesan *</span>
+                            </label>
+                            <textarea class="form-control h-100" id="message" rows="5" 
+                                data-i18n-placeholder-en="Tell us how we can help..." 
+                                data-i18n-placeholder-id="Ceritakan bagaimana kami bisa membantu..." 
+                                placeholder=""></textarea>
+                        </div>
+
+                        <div class="mb-3"></div>
+
+                        <div class="mb-4 form-check">
+                            <input type="checkbox" class="form-check-input" id="newsletter">
+                            <label class="form-check-label">
+                                <span data-i18n="newsletter_en">Subscribe to our newsletter for job updates</span>
+                                <span data-i18n="newsletter_id" class="d-none">Berlangganan newsletter untuk info lowongan dan update</span>
+                            </label>
+                        </div>
+
+
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg px-5"><i class="fas fa-paper-plane me-2"></i>
+                                <span data-i18n="send_btn_en">Send Message</span>
+                                <span data-i18n="send_btn_id" class="d-none">Kirim Pesan</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <h3 class="text-center mb-3">
+                        <span data-i18n="faq_en">Frequently Asked Questions</span>
+                        <span data-i18n="faq_id" class="d-none">Pertanyaan yang Sering Diajukan</span>
+                    </h3>
+                    <div class="accordion" id="faqAccordion">
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="faq1">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
+                                    <span data-i18n="faq1_q_en">How do I create an account?</span>
+                                    <span data-i18n="faq1_q_id" class="d-none">Bagaimana cara membuat akun?</span>
+                                </button>
+                            </h2>
+                            <div id="collapse1" class="accordion-collapse collapse" aria-labelledby="faq1" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body text-muted">
+                                    <span data-i18n="faq1_a_en">Click the "Register" button in the top navigation and choose either Job Seeker or Company account.</span>
+                                    <span data-i18n="faq1_a_id" class="d-none">Klik tombol "Register" di navigasi atas dan pilih antara akun Pencari Kerja atau Perusahaan.</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="faq2">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                                    <span data-i18n="faq2_q_en">Is NemuKerja free to use?</span>
+                                    <span data-i18n="faq2_q_id" class="d-none">Apakah NemuKerja gratis digunakan?</span>
+                                </button>
+                            </h2>
+                            <div id="collapse2" class="accordion-collapse collapse" aria-labelledby="faq2" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body text-muted">
+                                    <span data-i18n="faq2_a_en">Yes! Basic services for job seekers and companies are free.</span>
+                                    <span data-i18n="faq2_a_id" class="d-none">Ya! Layanan dasar untuk pencari kerja dan perusahaan gratis.</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="faq3">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                                    <span data-i18n="faq3_q_en">How do I apply for a job?</span>
+                                    <span data-i18n="faq3_q_id" class="d-none">Bagaimana cara melamar pekerjaan?</span>
+                                </button>
+                            </h2>
+                            <div id="collapse3" class="accordion-collapse collapse" aria-labelledby="faq3" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body text-muted">
+                                    <span data-i18n="faq3_a_en">Browse available jobs, click "View Details" then "Apply Now" to submit your application with a cover letter.</span>
+                                    <span data-i18n="faq3_a_id" class="d-none">Telusuri pekerjaan yang tersedia, klik "View Details" lalu "Apply Now" untuk mengirim lamaran dengan surat pengantar.</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="faq4">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
+                                    <span data-i18n="faq4_q_en">Can I post multiple job openings?</span>
+                                    <span data-i18n="faq4_q_id" class="d-none">Bisakah memposting banyak lowongan?</span>
+                                </button>
+                            </h2>
+                            <div id="collapse4" class="accordion-collapse collapse" aria-labelledby="faq4" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body text-muted">
+                                    <span data-i18n="faq4_a_en">Yes, companies can post multiple openings and manage them via the company dashboard.</span>
+                                    <span data-i18n="faq4_a_id" class="d-none">Ya, perusahaan dapat memposting banyak lowongan dan mengelolanya melalui dashboard perusahaan.</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="faq5">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
+                                    <span data-i18n="faq5_q_en">How long does it usually take to get a response?</span>
+                                    <span data-i18n="faq5_q_id" class="d-none">Berapa lama biasanya mendapat respon?</span>
+                                </button>
+                            </h2>
+                            <div id="collapse5" class="accordion-collapse collapse" aria-labelledby="faq5" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body text-muted">
+                                    <span data-i18n="faq5_a_en">Companies typically respond within 3-5 business days, depending on each employer.</span>
+                                    <span data-i18n="faq5_a_id" class="d-none">Perusahaan biasanya merespon dalam 3-5 hari kerja, tergantung masing-masing pemberi kerja.</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="faq6">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse6" aria-expanded="false" aria-controls="collapse6">
+                                    <span data-i18n="faq6_q_en">Is there a mobile app?</span>
+                                    <span data-i18n="faq6_q_id" class="d-none">Apakah ada aplikasi mobile?</span>
+                                </button>
+                            </h2>
+                            <div id="collapse6" class="accordion-collapse collapse" aria-labelledby="faq6" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body text-muted">
+                                    <span data-i18n="faq6_a_en">Our website is responsive and works well on mobile devices. Mobile app coming soon.</span>
+                                    <span data-i18n="faq6_a_id" class="d-none">Website kami sudah responsive dan bekerja baik di perangkat mobile. Aplikasi mobile menyusul.</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-3">
+                    <h4 class="text-center mb-3">
+                        <span data-i18n="map_en">Find Us Here</span>
+                        <span data-i18n="map_id" class="d-none">Temukan Kami Disini</span>
+                    </h4>
+                    <div class="map-container rounded">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3609.88955124707!2d104.0484566!3d1.1187204999999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31d98921856ddfab%3A0xf9d9fc65ca00c9d!2sPoliteknik%20Negeri%2Sbatam!5e1!3m2!1sen!2str!4v1759950669207!5m2!1sen!2str" 
+                                title="Location of Politeknik Negeri Batam on Google Maps"
+                                width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        <div class="mt-2 text-center"><small class="text-muted">Politeknik Negeri Batam, Batam, Indonesia</small></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

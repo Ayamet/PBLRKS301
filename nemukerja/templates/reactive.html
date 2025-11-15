@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Account Reactivation - NemuKerja{% endblock %}
+
+{% block content %}
+<div class="container-sm"> <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-lg border-0">
+                <div class="card-body p-4">
+                    
+                    <h2 class="text-center display-5 fw-bold mb-4">
+                        <span data-i18n="reactive_account_reactivation_en">Account Reactivation</span>
+                        <span data-i18n="reactive_account_reactivation_id" class="d-none">Aktivasi Ulang Akun</span>
+                    </h2>
+                    
+                    <form method="POST" action="{{ url_for('reactivate') }}">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="mb-3">
+                            <label for="email" class="form-label">
+                                <span data-i18n="register_email_address_en">Email Address</span>
+                                <span data-i18n="register_email_address_id" class="d-none">Alamat Email</span>
+                            </label>
+                            {{ form.email(class="form-control", id="email", placeholder="Enter your email") }}
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form.submit(class="btn btn-primary w-100", **{'data-i18n-value-en': 'Send Reactivation Link', 'data-i18n-value-id': 'Kirim Link Aktivasi Ulang'}) }}
+                        </div>
+                        
+                        <div class="mt-3 text-center">
+                            <p class="mb-0">
+                                <span data-i18n="reactive_back_to_en">Back to</span>
+                                <span data-i18n="reactive_back_to_id" class="d-none">Kembali ke</span>
+                                
+                                <a href="{{ url_for('login') }}" class="text-primary">
+                                    <span data-i18n="reactive_sign_in_en">Sign In</span>
+                                    <span data-i18n="reactive_sign_in_id" class="d-none">Masuk</span>
+                                </a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

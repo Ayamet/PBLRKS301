@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}About Us - NemuKerja{% endblock %}
+
+{% block content %}
+
+<div class="container-sm">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-lg border-0">
+                <div class="card-body p-4">
+                    <!-- PERBAIKAN: Menambahkan alt tag -->
+                    <img src="{{ url_for('static', filename='images/banner.png') }}" 
+                         class="img-fluid mb-4" 
+                         style="max-height: 150px; display: block; margin: 0 auto;"
+                         alt="NemuKerja Banner">
+                    
+                    <h2 class="text-center mb-4">
+                        <span data-i18n="about_about_nemukerja_en">About Us</span>
+                        <span data-i18n="about_about_nemukerja_id" class="d-none">Tentang Kami</span>
+                    </h2>
+
+                    <div class="text-content">
+                        <p class="mb-3">
+                            <span data-i18n="about_description_1_en">NemuKerja is a modern job platform connecting companies and job seekers with an easy, responsive, and fast experience. Our mission is to simplify recruitment through technology and accessibility.</span>
+                            <span data-i18n="about_description_1_id" class="d-none">NemuKerja adalah platform pekerjaan modern yang menghubungkan perusahaan dan pencari kerja dengan pengalaman yang mudah, responsif, dan cepat. Misi kami adalah menyederhanakan rekrutmen melalui teknologi dan aksesibilitas.</span>
+                        </p>
+                                           
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

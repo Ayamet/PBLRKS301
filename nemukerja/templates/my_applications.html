@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title_suffix }} - NemuKerja{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="card shadow-sm border-0 rounded-3">
+        <div class="card-body p-4">
+            
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="display-5 fw-bold text-dark mb-0">
+                    {% if title_suffix == "All Applications" %}
+                        <span data-i18n="my_applications_my_applications_en">My Applications</span>
+                        <span data-i18n="my_applications_my_applications_id" class="d-none">Lamaran Saya</span>
+                    {% elif title_suffix == "Pending Applications" %}
+                        <span data-i18n="my_applications_pending_en">Pending Applications</span>
+                        <span data-i18n="my_applications_pending_id" class="d-none">Lamaran Menunggu</span>
+                    {% elif title_suffix == "Accepted Applications" %}
+                        <span data-i18n="my_applications_accepted_en">Accepted Applications</span>
+                        <span data-i18n="my_applications_accepted_id" class="d-none">Lamaran Diterima</span>
+                    {% else %}
+                        {{ title_suffix }}
+                    {% endif %}
+                </h2>
+                <a href="{{ url_for('dashboard') }}" class="btn btn-outline-primary">
+                    <i class="fas fa-arrow-left me-2"></i>
+                    <span data-i18n="my_applications_back_to_dashboard_en">Back to Dashboard</span>
+                    <span data-i18n="my_applications_back_to_dashboard_id" class="d-none">Kembali ke Dashboard</span>
+                </a>
+            </div>
+            
+            {% if applications %}
+            <div class="table-responsive">
+                <table class="table table-hover table-striped align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th><span data-i18n="my_applications_job_title_en">Job Title</span><span data-i18n="my_applications_job_title_id" class="d-none">Judul Pekerjaan</span></th>
+                            <th><span data-i18n="my_applications_company_en">Company</span><span data-i18n="my_applications_company_id" class="d-none">Perusahaan</span></th>
+                            <th><span data-i18n="my_applications_applied_date_en">Applied Date</span><span data-i18n="my_applications_applied_date_id" class="d-none">Tanggal Lamar</span></th>
+                            <th><span data-i18n="my_applications_status_en">Status</span><span data-i18n="my_applications_status_id" class="d-none">Status</span></th>
+                            <th><span data-i18n="my_applications_actions_en">Actions</span><span data-i18n="my_applications_actions_id" class="d-none">Aksi</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for application in applications %}
+                        <tr>
+                            <td>
+                                <strong class="text-dark">{{ application.job.title }}</strong>
+                                <br>
+                                <small class="text-muted">{{ application.job.location }}</small>
+                            </td>
+                            <td>{{ application.job.company.company_name }}</td>
+                            <td>{{ application.applied_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                            <td>
+                                <span class="badge rounded-pill 
+                                    {% if application.status == 'accepted' %}bg-success-subtle text-success-emphasis
+                                    {% elif application.status == 'rejected' %}bg-danger-subtle text-danger-emphasis
+                                    {% else %}bg-warning-subtle text-warning-emphasis{% endif %}">
+                                    
+                                    {% if application.status == 'accepted' %}
+                                        <span data-i18n="my_applications_accepted_en">Accepted</span>
+                                        <span data-i18n="my_applications_accepted_id" class="d-none">Diterima</span>
+                                    {% elif application.status == 'rejected' %}
+                                        <span data-i18n="my_applications_rejected_en">Rejected</span>
+                                        <span data-i18n="my_applications_rejected_id" class="d-none">Ditolak</span>
+                                    {% else %}
+                                        <span data-i18n="my_applications_pending_en">Pending</span>
+                                        <span data-i18n="my_applications_pending_id" class="d-none">Menunggu</span>
+                                    {% endif %}
+                                </span>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-outline-primary btn-sm" 
+                                        onclick="showApplicationDetail('{{ application.job.id }}')">
+                                    <i class="fas fa-eye"></i>
+                                    <span data-i18n="my_applications_view_job_en">View Job</span>
+                                    <span data-i18n="my_applications_view_job_id" class="d-none">Lihat Pekerjaan</span>
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center py-5">
+                <i class="fas fa-file-alt fa-3x text-muted mb-3"></i>
+                <h4>
+                    <span data-i18n="my_applications_no_applications_en">No Applications Yet</span>
+                    <span data-i18n="my_applications_no_applications_id" class="d-none">Belum Ada Lamaran</span>
+                </h4>
+                <p class="text-muted mb-4">
+                    <span data-i18n="my_applications_no_applications_message_en">You haven't applied for any jobs yet. Start browsing available jobs!</span>
+                    <span data-i18n="my_applications_no_applications_message_id" class="d-none">Anda belum melamar pekerjaan apa pun. Mulai telusuri lowongan yang tersedia!</span>
+                </p>
+                <a href="{{ url_for('dashboard') }}" class="btn btn-primary">
+                    <i class="fas fa-briefcase me-2"></i>
+                    <span data-i18n="my_applications_browse_jobs_en">Browse Jobs</span>
+                    <span data-i18n="my_applications_browse_jobs_id" class="d-none">Telusuri Lowongan</span>
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="applicationDetailModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content border-0 shadow-lg rounded-3">
+            <div class="modal-header bg-primary text-white border-0 rounded-top-3 p-4">
+                <h5 class="modal-title h4 fw-bold" id="applicationDetailTitle">
+                    <span data-i18n="my_applications_job_details_en">Job Details</span>
+                    <span data-i18n="my_applications_job_details_id" class="d-none">Detail Pekerjaan</span>
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4" id="applicationDetailBody">
+                </div>
+            <div class="modal-footer border-top-0 bg-light p-3">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <span data-i18n="my_applications_close_en">Close</span>
+                    <span data-i18n="my_applications_close_id" class="d-none">Tutup</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - NemuKerja{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="display-5 fw-bold text-dark mb-4">
+        <!-- FIX: Terjemahan ditambahkan -->
+        <span data-i18n="admin_dashboard_admin_dashboard_en">Admin Dashboard</span>
+        <span data-i18n="admin_dashboard_admin_dashboard_id" class="d-none">Dasbor Admin</span>
+    </h2>
+    
+    <!-- Baris Kartu Statistik Atas -->
+    <div class="row g-4 mb-4">
+        <div class="col-lg-3 col-md-6">
+            <div class="card bg-primary-subtle text-primary-emphasis border-0 shadow-sm rounded-3 h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <!-- FIX: Terjemahan ditambahkan -->
+                            <p class="fs-6 mb-0 text-uppercase">
+                                <span data-i18n="admin_total_users_en">Total Users</span>
+                                <span data-i18n="admin_total_users_id" class="d-none">Total Pengguna</span>
+                            </p>
+                            <h3 class="display-4 fw-bold mb-0">{{ total_users }}</h3>
+                        </div>
+                        <i class="fas fa-users fa-3x text-primary opacity-50"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card bg-success-subtle text-success-emphasis border-0 shadow-sm rounded-3 h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <!-- FIX: Terjemahan ditambahkan -->
+                            <p class="fs-6 mb-0 text-uppercase">
+                                <span data-i18n="admin_total_comp_en">Total Companies</span>
+                                <span data-i18n="admin_total_comp_id" class="d-none">Total Perusahaan</span>
+                            </p>
+                            <h3 class="display-4 fw-bold mb-0">{{ total_companies }}</h3>
+                        </div>
+                        <i class="fas fa-building fa-3x text-success opacity-50"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card bg-info-subtle text-info-emphasis border-0 shadow-sm rounded-3 h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <!-- FIX: Terjemahan ditambahkan -->
+                            <p class="fs-6 mb-0 text-uppercase">
+                                <span data-i18n="admin_total_jobs_en">Total Jobs</span>
+                                <span data-i18n="admin_total_jobs_id" class="d-none">Total Pekerjaan</span>
+                            </p>
+                            <h3 class="display-4 fw-bold mb-0">{{ total_jobs }}</h3>
+                        </div>
+                        <i class="fas fa-briefcase fa-3x text-info opacity-50"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card bg-warning-subtle text-warning-emphasis border-0 shadow-sm rounded-3 h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <!-- FIX: Terjemahan ditambahkan -->
+                            <p class="fs-6 mb-0 text-uppercase">
+                                <span data-i18n="admin_total_apps_en">Total Applications</span>
+                                <span data-i18n="admin_total_apps_id" class="d-none">Total Lamaran</span>
+                            </p>
+                            <h3 class="display-4 fw-bold mb-0">{{ total_applications }}</h3>
+                        </div>
+                        <i class="fas fa-file-alt fa-3x text-warning opacity-50"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Baris Kartu Statistik Bawah -->
+    <div class="row g-4 mb-4">
+        <div class="col-lg-6">
+            <div class="card shadow-sm border-0 rounded-3 h-100">
+                <div class="card-header bg-light fw-bold text-dark">
+                    <!-- FIX: Terjemahan ditambahkan -->
+                    <span data-i18n="admin_dashboard_user_registration_trend_en">User Registration Trend</span>
+                    <span data-i18n="admin_dashboard_user_registration_trend_id" class="d-none">Tren Registrasi Pengguna</span>
+                </div>
+                <div class="card-body p-4 text-center">
+                    <div class="row">
+                        <div class="col-6 border-end">
+                            <h4 class="display-5 fw-bold text-primary">{{ user_count }}</h4>
+                            <!-- FIX: Terjemahan ditambahkan -->
+                            <span class="text-muted"><span data-i18n="admin_dashboard_job_seekers_en">Job Seekers</span><span data-i18n="admin_dashboard_job_seekers_id" class="d-none">Pencari Kerja</span></span>
+                        </div>
+                        <div class="col-6">
+                            <h4 class="display-5 fw-bold text-success">{{ company_user_count }}</h4>
+                            <!-- FIX: Terjemahan ditambahkan -->
+                            <span class="text-muted"><span data-i18n="admin_dashboard_company_accounts_en">Company Accounts</span><span data-i18n="admin_dashboard_company_accounts_id" class="d-none">Akun Perusahaan</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="col-lg-6">
+            <div class="card shadow-sm border-0 rounded-3 h-100">
+                <div class="card-header bg-light fw-bold text-dark">
+                    <!-- FIX: Terjemahan ditambahkan -->
+                    <span data-i18n="admin_dashboard_job_statistics_en">Job Statistics</span>
+                    <span data-i18n="admin_dashboard_job_statistics_id" class="d-none">Statistik Pekerjaan</span>
+                </div>
+                <div class="card-body p-4 text-center">
+                    <div class="row">
+                        <div class="col-6 border-end">
+                            <h4 class="display-5 fw-bold text-success">{{ open_jobs }}</h4>
+                            <!-- FIX: Terjemahan ditambahkan -->
+                            <span class="text-muted"><span data-i18n="admin_dashboard_open_jobs_en">Open Jobs</span><span data-i18n="admin_dashboard_open_jobs_id" class="d-none">Pekerjaan Dibuka</span></span>
+                        </div>
+                        <div class="col-6">
+                            <h4 class="display-5 fw-bold text-warning">{{ closed_jobs }}</h4>
+                            <!-- FIX: Terjemahan ditambahkan -->
+                            <span class="text-muted"><span data-i18n="admin_dashboard_closed_jobs_en">Closed Jobs</span><span data-i18n="admin_dashboard_closed_jobs_id" class="d-none">Pekerjaan Ditutup</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabel Recent Activity -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card shadow-sm border-0 rounded-3 mb-4">
+                <div class="card-header bg-light fw-bold text-dark">
+                    <!-- FIX: Terjemahan ditambahkan -->
+                    <span data-i18n="admin_dashboard_recent_activity_en">Recent Activity</span>
+                    <span data-i18n="admin_dashboard_recent_activity_id" class="d-none">Aktivitas Terbaru</span>
+                </div>
+                <div class="card-body p-4">
+                    {% if recent_activity %}
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle" id="dataTable" width="100%" cellspacing="0">
+                            <thead class="table-light">
+                                <tr>
+                                    <!-- FIX: Terjemahan ditambahkan -->
+                                    <th><span data-i18n="admin_dashboard_type_en">Type</span><span data-i18n="admin_dashboard_type_id" class="d-none">Tipe</span></th>
+                                    <th><span data-i18n="admin_dashboard_description_en">Description</span><span data-i18n="admin_dashboard_description_id" class="d-none">Deskripsi</span></th>
+                                    <th><span data-i18n="admin_dashboard_date_en">Date</span><span data-i18n="admin_dashboard_date_id" class="d-none">Tanggal</span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for activity in recent_activity %}
+                                <tr>
+                                    <td>
+                                        <!-- FIX: Terjemahan ditambahkan -->
+                                        {% if activity.type == 'user' %}
+                                            <span class="badge rounded-pill bg-primary-subtle text-primary-emphasis"><span data-i18n="admin_dashboard_user_en">User</span><span data-i18n="admin_dashboard_user_id" class="d-none">Pengguna</span></span>
+                                        {% elif activity.type == 'company' %}
+                                            <span class="badge rounded-pill bg-success-subtle text-success-emphasis"><span data-i18n="admin_dashboard_company_en">Company</span><span data-i18n="admin_dashboard_company_id" class="d-none">Perusahaan</span></span>
+                                        {% elif activity.type == 'job' %}
+                                            <span class="badge rounded-pill bg-info-subtle text-info-emphasis"><span data-i18n="admin_dashboard_job_en">Job</span><span data-i18n="admin_dashboard_job_id" class="d-none">Pekerjaan</span></span>
+                                        {% elif activity.type == 'application' %}
+                                            <span class="badge rounded-pill bg-warning-subtle text-warning-emphasis"><span data-i18n="admin_dashboard_application_en">Application</span><span data-i18n="admin_dashboard_application_id" class="d-none">Lamaran</span></span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <span data-i18n="desc_en">{{ activity.desc_en }}</span>
+                                        <span data-i18n="desc_id" class="d-none">{{ activity.desc_id }}</span>
+                                    </td>
+                                    <td>{{ activity.date }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <!-- FIX: Terjemahan ditambahkan -->
+                    <p class="text-muted"><span data-i18n="admin_dashboard_no_recent_activity_en">No recent activity.</span><span data-i18n="admin_dashboard_no_recent_activity_id" class="d-none">Tidak ada aktivitas terbaru.</span></p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

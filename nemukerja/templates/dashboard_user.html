@@ -1,0 +1,202 @@
+{% extends "base.html" %}
+
+{% block title %}User Dashboard - NemuKerja{% endblock %}
+
+{% block content %}
+<div class="container">
+    
+    <div class="text-center mb-5">
+        <h2 class="display-4 fw-bold text-dark mb-3">
+            <span data-i18n="dashboard_user_welcome_en">Welcome,</span>
+            <span data-i18n="dashboard_user_welcome_id" class="d-none">Selamat datang,</span>
+            {{ current_user.applicant_profile.full_name if current_user.applicant_profile else current_user.name }}
+        </h2>
+        <p class="lead text-muted">
+            <span data-i18n="dashboard_user_job_seeker_dashboard_en">Job Seeker Dashboard</span>
+            <span data-i18n="dashboard_user_job_seeker_dashboard_id" class="d-none">Dasbor Pencari Kerja</span>
+        </p>
+        <div class="mt-3">
+            <small class="text-muted">
+                <span data-i18n="dashboard_user_member_since_en">Member since:</span>
+                <span data-i18n="dashboard_user_member_since_id" class="d-none">Anggota sejak:</span>
+                {{ current_user.created_at.strftime('%B %Y') }}
+            </small>
+        </div>
+    </div>
+
+    <!-- Statistik Card (Sudah Benar) -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <a href="{{ url_for('my_applications') }}" class="card h-100 shadow-sm border-0 rounded-3 text-center p-3 text-decoration-none" style="background-color: #e6f0ff;">
+                <div class="card-body d-flex flex-column justify-content-center">
+                    <div class="d-inline-flex align-items-center justify-content-center bg-primary text-white rounded-circle mb-3 mx-auto" style="width: 50px; height: 50px;">
+                        <i class="fas fa-file-alt fs-5"></i>
+                    </div>
+                    <h3 class="display-5 fw-bold text-dark mb-1">{{ total_app_count }}</h3>
+                    <p class="fs-6 text-muted mb-0"> 
+                        <span data-i18n="dashboard_user_total_applications_en">Total Applications</span>
+                        <span data-i18n="dashboard_user_total_applications_id" class="d-none">Total Lamaran</span>
+                    </p>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="{{ url_for('my_pending_applications') }}" class="card h-100 shadow-sm border-0 rounded-3 text-center p-3 text-decoration-none" style="background-color: #fff9e6;">
+                <div class="card-body d-flex flex-column justify-content-center">
+                    <div class="d-inline-flex align-items-center justify-content-center bg-warning text-white rounded-circle mb-3 mx-auto" style="width: 50px; height: 50px;">
+                        <i class="fas fa-hourglass-half fs-5"></i>
+                    </div>
+                    <h3 class="display-5 fw-bold text-dark mb-1">{{ pending_app_count }}</h3>
+                    <p class="fs-6 text-muted mb-0"> 
+                        <span data-i18n="dashboard_user_pending_applications_en">Pending Applications</span>
+                        <span data-i18n="dashboard_user_pending_applications_id" class="d-none">Lamaran Menunggu</span>
+                    </p>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="{{ url_for('my_accepted_applications') }}" class="card h-100 shadow-sm border-0 rounded-3 text-center p-3 text-decoration-none" style="background-color: #e6f9f0;">
+                <div class="card-body d-flex flex-column justify-content-center">
+                    <div class="d-inline-flex align-items-center justify-content-center bg-success text-white rounded-circle mb-3 mx-auto" style="width: 50px; height: 50px;">
+                        <i class="fas fa-check-circle fs-5"></i>
+                    </div>
+                    <h3 class="display-5 fw-bold text-dark mb-1">{{ accepted_app_count }}</h3>
+                    <p class="fs-6 text-muted mb-0"> 
+                        <span data-i18n="dashboard_user_accepted_applications_en">Accepted Applications</span>
+                        <span data-i18n="dashboard_user_accepted_applications_id" class="d-none">Lamaran Diterima</span>
+                    </p>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    {% include '_filter_form.html' %}
+
+    <div class="mb-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="fw-bold text-dark">
+                <span data-i18n="dashboard_user_available_job_listings_en">Available Job Listings</span>
+                <span data-i18n="dashboard_user_available_job_listings_id" class="d-none">Daftar Pekerjaan Tersedia</span>
+            </h3>
+            <small class="text-muted">
+                {{ jobs_pagination.total }} 
+                <span data-i18n="dashboard_user_jobs_found_en">jobs found</span>
+                <span data-i18n="dashboard_user_jobs_found_id" class="d-none">pekerjaan ditemukan</span>
+            </small>
+        </div>
+
+        {% if guest %}
+        <!-- Alert login (Sudah Benar) -->
+        <div class="alert alert-info border-0" role="alert">
+            <i class="fas fa-info-circle me-2"></i>
+            <span data-i18n="dashboard_user_please_login_to_apply_en">Please</span> 
+            <a href="{{ url_for('login') }}" class="alert-link">
+                <span data-i18n="dashboard_user_login_en">login</span>
+                <span data-i18n="dashboard_user_login_id" class="d-none">masuk</span>
+            </a> 
+            <span data-i18n="dashboard_user_or_en">or</span>
+            <a href="{{ url_for('register') }}" class="alert-link">
+                <span data-i18n="dashboard_user_register_en">register</span>
+                <span data-i18n="dashboard_user_register_id" class="d-none">daftar</span>
+            </a> 
+            <span data-i18n="dashboard_user_to_apply_for_jobs_en">to apply for jobs.</span>
+            <span data-i18n="dashboard_user_to_apply_for_jobs_id" class="d-none">untuk melamar pekerjaan.</span>
+        </div>
+        {% endif %}
+
+        {% if jobs_pagination.items %}
+            <div class="row g-4">
+                {% for job in jobs_pagination.items %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 shadow-sm border-0 rounded-3">
+                        <div class="card-body p-4">
+                            <div class="mb-3">
+                                <h5 class="card-title fw-bold text-dark mb-2">{{ job.title }}</h5>
+                                <h6 class="card-subtitle text-muted">{{ job.company.company_name }}</h6>
+                            </div>
+                            
+                            <p class="card-text text-muted mb-4 small">{{ job.description[:120] }}{% if job.description|length > 120 %}...{% endif %}</p>
+                            
+                            <div class="vstack gap-2 mb-4">
+                                <div class="d-flex align-items-center text-muted small">
+                                    <i class="fas fa-map-marker-alt text-primary me-2" style="width: 1rem;"></i>
+                                    <span>{{ job.location }}</span>
+                                </div>
+                                
+                                <!-- === PERBAIKAN DI SINI: BLOK GAJI DITAMBAHKAN === -->
+                                <div class="d-flex align-items-center text-muted small">
+                                    <i class="fas fa-money-bill-wave text-success me-2" style="width: 1rem;"></i>
+                                    <span>
+                                        {% if job.salary_min > 0 and job.salary_max > 0 %}
+                                            Rp {{ "{:,.0f}".format(job.salary_min).replace(',', '.') }} - Rp {{ "{:,.0f}".format(job.salary_max).replace(',', '.') }}
+                                        {% elif job.salary_min > 0 %}
+                                            <span data-i18n="salary_from_en">From</span><span data-i18n="salary_from_id" class="d-none">Mulai dari</span> Rp {{ "{:,.0f}".format(job.salary_min).replace(',', '.') }}
+                                        {% elif job.salary_max > 0 %}
+                                            <span data-i18n="salary_upto_en">Up to</span><span data-i18n="salary_upto_id" class="d-none">Hingga</span> Rp {{ "{:,.0f}".format(job.salary_max).replace(',', '.') }}
+                                        {% else %}
+                                            <span data-i18n="salary_not_disclosed_en">Salary not disclosed</span><span data-i18n="salary_not_disclosed_id" class="d-none">Gaji tidak ditampilkan</span>
+                                        {% endif %}
+                                    </span>
+                                </div>
+                                <!-- === AKHIR PERBAIKAN === -->
+                                
+                                <div class="d-flex align-items-center text-muted small">
+                                    <i class="fas fa-users text-info me-2" style="width: 1rem;"></i>
+                                    <span>
+                                        {{ job.slots }} 
+                                        <span data-i18n="dashboard_user_slots_available_en">slots available</span>
+                                        <span data-i18n="dashboard_user_slots_available_id" class="d-none">kuota tersedia</span>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="d-flex gap-2 mt-auto">
+                                <button type="button" 
+                                        class="btn btn-outline-primary w-50"
+                                        onclick="showJobDetail('{{ job.id }}')">
+                                    <i class="fas fa-eye me-1"></i>
+                                    <span data-i18n="dashboard_user_view_details_en">View</span>
+                                    <span data-i18n="dashboard_user_view_details_id" class="d-none">Lihat</span>
+                                </button>
+                                {% if (not guest) and current_user.role == 'applicant' %}
+                                <a href="{{ url_for('apply', job_id=job.id) }}" class="btn btn-primary w-50">
+                                    <i class="fas fa-paper-plane me-1"></i>
+                                    <span data-i18n="dashboard_user_apply_now_en">Apply</span>
+                                    <span data-i18n="dashboard_user_apply_now_id" class="d-none">Lamar</span>
+                                </a>
+                                {% elif guest %}
+                                <a href="{{ url_for('login') }}" class="btn btn-primary w-50">
+                                    <i class="fas fa-sign-in-alt me-1"></i>
+                                    <span data-i18n="dashboard_user_login_to_apply_en">Login</span>
+                                    <span data-i18n="dashboard_user_login_to_apply_id" class="d-none">Masuk</span>
+                                </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            {% set pagination = jobs_pagination %}
+            {% include '_pagination.html' %}
+
+        {% else %}
+            <!-- Tampilan "No Jobs" (Sudah Benar) -->
+            <div class="card text-center py-5 shadow-sm border-0 rounded-3">
+                <div class="card-body">
+                    <i class="fas fa-briefcase fa-3x text-muted mb-4"></i>
+                    <h4 class="fw-bold text-dark mb-3">
+                        <span data-i18n="dashboard_user_no_jobs_available_en">No Jobs Available</span>
+                        <span data-i18n="dashboard_user_no_jobs_available_id" class="d-none">Tidak Ada Pekerjaan Tersedia</span>
+                    </h4>
+                    <p class="text-muted mb-4">
+                        <span data-i18n="dashboard_user_check_back_later_en">Please check back later for new job opportunities.</span>
+                        <span data-i18n="dashboard_user_check_back_later_id" class="d-none">Silakan periksa kembali nanti untuk peluang pekerjaan baru.</span>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

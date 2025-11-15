@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block title %}All Applications - NemuKerja{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="card shadow-sm border-0 rounded-3">
+        <div class="card-body p-4">
+             <h2 class="display-5 fw-bold text-dark mb-4">
+                <span data-i18n="company_applications_all_job_applications_en">All Job Applications</span>
+                <span data-i18n="company_applications_all_job_applications_id" class="hidden">Semua Lamaran Pekerjaan</span>
+            </h2>
+            {% if applications %}
+            <div class="table-responsive">
+                <table class="table table-hover table-striped align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th><span data-i18n="company_applications_job_title_en">Job Title</span><span data-i18n="company_applications_job_title_id" class="d-none">Judul Pekerjaan</span></th>
+                            <th><span data-i18n="company_applications_applicant_name_en">Applicant Name</span><span data-i18n="company_applications_applicant_name_id" class="d-none">Nama Pelamar</span></th>
+                            <th><span data-i18n="company_applications_applicant_email_en">Applicant Email</span><span data-i18n="company_applications_applicant_email_id" class="d-none">Email Pelamar</span></th>
+                            <th><span data-i18n="company_applications_applied_date_en">Applied Date</span><span data-i18n="company_applications_applied_date_id" class="d-none">Tanggal Lamar</span></th>
+                            <th><span data-i18n="company_applications_status_en">Status</span><span data-i18n="company_applications_status_id" class="d-none">Status</span></th>
+                            <th><span data-i18n="company_applications_actions_en">Actions</span><span data-i18n="company_applications_actions_id" class="d-none">Aksi</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for application in applications %}
+                        <tr>
+                            <td>
+                                <strong class="text-dark">{{ application.job.title }}</strong>
+                                <br>
+                                <small class="text-muted">{{ application.job.location }}</small>
+                            </td>
+                            <td>{{ application.applicant.full_name }}</td>
+                            <td>{{ application.applicant.user.email }}</td>
+                            <td>{{ application.applied_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                            <td>
+                                <span class="badge rounded-pill 
+                                    {% if application.status == 'pending' %}bg-warning-subtle text-warning-emphasis
+                                    {% elif application.status == 'accepted' %}bg-success-subtle text-success-emphasis
+                                    {% elif application.status == 'rejected' %}bg-danger-subtle text-danger-emphasis
+                                    {% else %}bg-secondary-subtle text-secondary-emphasis{% endif %}">
+
+                                    {% if application.status == 'accepted' %}
+                                        <span data-i18n="status_accepted_en">Accepted</span>
+                                        <span data-i18n="status_accepted_id" class="d-none">Diterima</span>
+                                    {% elif application.status == 'rejected' %}
+                                        <span data-i18n="status_rejected_en">Rejected</span>
+                                        <span data-i18n="status_rejected_id" class="d-none">Ditolak</span>
+                                    {% else %}
+                                        <span data-i18n="status_pending_en">Pending</span>
+                                        <span data-i18n="status_pending_id" class="d-none">Menunggu</span>
+                                    {% endif %}
+
+                                </span>
+                            </td>
+                            <td>
+                                <a href="{{ url_for('view_application', application_id=application.id) }}" 
+                                   class="btn btn-outline-primary btn-sm">
+                                    <i class="fas fa-eye"></i> 
+                                    <span data-i18n="company_applications_view_en">View</span>
+                                    <span data-i18n="company_applications_view_id" class="d-none">Lihat</span>
+                                </a>
+                                {% if application.status == 'pending' %}
+                                <div class="btn-group btn-group-sm mt-1 d-block d-md-inline-block">
+                                    <form method="POST" action="{{ url_for('accept_application', application_id=application.id) }}" class="d-inline">
+                                        <button type="submit" class="btn btn-outline-success btn-sm"
+                                                onclick="return confirm('Accept this application?')" title="Accept">
+                                            <i class="fas fa-check"></i>
+                                        </button>
+                                    </form>
+                                    <form method="POST" action="{{ url_for('reject_application', application_id=application.id) }}" class="d-inline">
+                                        <button type="submit" class="btn btn-outline-danger btn-sm"
+                                                onclick="return confirm('Reject this application?')" title="Reject">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center py-5">
+                <i class="fas fa-file-alt fa-3x text-muted mb-3"></i>
+                <h4>
+                    <span data-i18n="company_applications_no_applications_yet_en">No Applications Yet</span>
+                    <span data-i18n="company_applications_no_applications_yet_id" class="d-none">Belum Ada Lamaran</span>
+                </h4>
+                <p class="text-muted">
+                    <span data-i18n="company_applications_you_haven_t_received_any_job_applications_yet_en">You haven't received any job applications yet.</span>
+                    <span data-i18n="company_applications_you_haven_t_received_any_job_applications_yet_id" class="d-none">Anda belum menerima lamaran pekerjaan apa pun.</span>
+                </p>
+                <a href="{{ url_for('dashboard') }}" class="btn btn-primary">
+                    <span data-i18n="company_applications_back_to_dashboard_en">Back to Dashboard</span>
+                    <span data-i18n="company_applications_back_to_dashboard_id" class="d-none">Kembali ke Dasbor</span>
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="mt-3 text-center">
+        <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> 
+            <span data-i18n="company_applications_back_to_dashboard_en">Back to Dashboard</span>
+            <span data-i18n="company_applications_back_to_dashboard_id" class="d-none">Kembali ke Dasbor</span>
+        </a>
+    </div>
+</div>
+{% endblock %}

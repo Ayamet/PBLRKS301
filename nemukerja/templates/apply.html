@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% block title %}Apply for {{ job.title }} - NemuKerja{% endblock %}
+
+{% block content %}
+<div class="container"> <!-- Menambahkan container agar tidak mepet -->
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-8">
+            <div class="card shadow-sm border-0 rounded-3">
+                <div class="card-header bg-primary text-white p-4">
+                    <h4 class="mb-0">
+                        <span data-i18n="apply_for_en">Apply for:</span>
+                        <span data-i18n="apply_for_id" class="d-none">Lamar untuk:</span>
+                        {{ job.title }}
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+                    <div class="card shadow-sm border-0 rounded-3 job-info mb-4 p-3">
+                        <h5><span data-i18n="apply_job_details_en">Job Details</span><span data-i18n="apply_job_details_id" class="d-none">Detail Pekerjaan</span></h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong><span data-i18n="apply_company_en">Company:</span><span data-i18n="apply_company_id" class="d-none">Perusahaan:</span></strong> {{ job.company.company_name }}</p>
+                                <p><strong><span data-i18n="apply_location_en">Location:</span><span data-i18n="apply_location_id" class="d-none">Lokasi:</span></strong> {{ job.location }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong><span data-i18n="apply_available_slots_en">Available Slots:</span><span data-i18n="apply_available_slots_id" class="d-none">Kuota Tersedia:</span></strong> {{ job.slots }}</p>
+                                <p><strong><span data-i18n="apply_current_applicants_en">Current Applicants:</span><span data-i18n="apply_current_applicants_id" class="d-none">Pelamar Saat Ini:</span></strong> {{ job.applications|length }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card shadow-sm border-0 rounded-3 applicant-info mb-4 p-3">
+                        <h5><span data-i18n="apply_your_information_en">Your Information</span><span data-i18n="apply_your_information_id" class="d-none">Informasi Anda</span></h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong><span data-i18n="apply_name_en">Name:</span><span data-i18n="apply_name_id" class="d-none">Nama:</span></strong> {{ current_user.applicant_profile.full_name }}</p> 
+                                <p><strong><span data-i18n="apply_email_en">Email:</span><span data-i18n="apply_email_id" class="d-none">Email:</span></strong> {{ current_user.email }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong><span data-i18n="apply_account_type_en">Account Type:</span><span data-i18n="apply_account_type_id" class="d-none">Tipe Akun:</span></strong>
+                                    <span data-i18n="apply_job_seeker_en">Job Seeker</span>
+                                    <span data-i18n="apply_job_seeker_id" class="d-none">Pencari Kerja</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="application-form">
+                        <h5 class="fw-bold"><span data-i18n="apply_application_form_en">Application Form</span><span data-i18n="apply_application_form_id" class="d-none">Formulir Lamaran</span></h5>
+                        
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% if messages %}
+                                {% for category, message in messages %}
+                                    <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+                                        <!-- Ini sudah diatur di base.html untuk diterjemahkan -->
+                                        {% if i18n_flash[message] %}
+                                            <span data-i18n="flash_{{ message }}_en">{{ i18n_flash[message].en }}</span>
+                                            <span data-i18n="flash_{{ message }}_id" class="d-none">{{ i18n_flash[message].id }}</span>
+                                        {% else %}
+                                            {{ message }}
+                                        {% endif %}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        {% endwith %}
+
+                        <form method="POST" action="{{ url_for('apply', job_id=job.id) }}" enctype="multipart/form-data" id="apply-form">
+                            {{ form.hidden_tag() }}
+                            
+                            <div class="form-group mb-4">
+                                <label class="form-label fw-bold">
+                                    <span data-i18n="apply_upload_cv_en">Upload Your CV</span>
+                                    <span data-i18n="apply_upload_cv_id" class="d-none">Unggah CV Anda</span>
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <small class="text-muted d-block mb-2">
+                                    <span data-i18n="apply_cv_requirements_en">PDF format only, maximum 10MB</span>
+                                    <span data-i18n="apply_cv_requirements_id" class="d-none">Format PDF saja, maksimal 10MB</span>
+                                </small>
+                                {{ form.cv_file(class="form-control", id="cv_file") }}
+                                {% if form.cv_file.errors %}
+                                    <div class="text-danger mt-1">
+                                        {% for error in form.cv_file.errors %}
+                                            <small>{{ error }}</small><br>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="form-group mb-4">
+                                <label class="form-label fw-bold">
+                                    <span data-i18n="apply_cover_letter_en">Cover Letter</span>
+                                    <span data-i18n="apply_cover_letter_id" class="d-none">Surat Lamaran</span>
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <!-- FIX 1: Mengganti 100 -> 50 -->
+                                <small class="text-muted d-block mb-2">
+                                    <span data-i18n="apply_cover_letter_tips_en">Tell us why you're interested in this position and what makes you a good candidate (minimum 50 characters).</span>
+                                    <span data-i18n="apply_cover_letter_tips_id" class="d-none">Ceritakan mengapa Anda tertarik dengan posisi ini dan apa yang membuat Anda menjadi kandidat yang baik (minimal 50 karakter).</span>
+                                </small>
+                                {{ form.cover_letter(class="form-control", rows="8", placeholder="Write your cover letter here...", id="cover_letter") }}
+                                {% if form.cover_letter.errors %}
+                                    <div class="text-danger mt-1">
+                                        {% for error in form.cover_letter.errors %}
+                                            <small>{{ error }}</small>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                                <!-- FIX 2: Membuat "Character count" bisa diterjemahkan -->
+                                <div class="text-muted small mt-1" id="charCount">
+                                    <span data-i18n="apply_char_count_en">Character count:</span>
+                                    <span data-i18n="apply_char_count_id" class="d-none">Jumlah karakter:</span>
+                                    <span id="charCountValue">0</span>
+                                </div>
+                            </div>
+
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <a href="{{ url_for('dashboard') }}" class="btn btn-secondary me-md-2">
+                                    <span data-i18n="apply_cancel_en">Cancel</span>
+                                    <span data-i18n="apply_cancel_id" class="d-none">Batal</span>
+                                </a>
+                                <!-- FIX 3: Membuat tombol submit bisa diterjemahkan -->
+                                {{ form.submit(class="btn btn-primary", **{'data-i18n-value-en': 'Submit Application', 'data-i18n-value-id': 'Kirim Lamaran'}) }}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

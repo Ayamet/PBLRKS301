@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+
+{% block title %}Add Job - NemuKerja{% endblock %}
+
+{% block content %}
+<div class="wrap">
+    <div class="img" style="background-color: #e9ecef; height: 150px; display: flex; justify-content: center; align-items: center;">
+        <img src="{{ url_for('static', filename='images/banner.png') }}" style="width: 550px; height: 150px;">
+    </div>
+    
+    <h2>
+        <span data-i18n="add_job_title_en">Add New Job</span>
+        <span data-i18n="add_job_title_id" class="d-none">Tambah Pekerjaan Baru</span>
+    </h2>
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('add_job') }}">
+        {{ form.hidden_tag() }}
+        
+        <div class="form-group mt-3">
+            <label class="form-label fw-bold">
+                <span data-i18n="job_title_label_en">Job Title</span>
+                <span data-i18n="job_title_label_id" class="d-none">Judul Pekerjaan</span>
+            </label>
+            <small class="text-muted d-block mb-2">
+                <span data-i18n="job_title_help_en">Enter a clear and descriptive job title</span>
+                <span data-i18n="job_title_help_id" class="d-none">Masukkan judul pekerjaan yang jelas dan deskriptif</span>
+            </small>
+            {{ form.title(class="form-control", placeholder="e.g., Senior Web Developer, Marketing Manager", id="title") }}
+            {% if form.title.errors %}
+                <div class="text-danger mt-1">
+                    {% for error in form.title.errors %}
+                        <small>{{ error }}</small>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group mt-3">
+            <label class="form-label fw-bold">
+                <span data-i18n="location_label_en">Location</span>
+                <span data-i18n="location_label_id" class="d-none">Lokasi</span>
+            </label>
+            <small class="text-muted d-block mb-2">
+                <span data-i18n="location_help_en">Where is this job located?</span>
+                <span data-i18n="location_help_id" class="d-none">Di mana lokasi pekerjaan ini?</span>
+            </small>
+            {{ form.location(class="form-control", placeholder="e.g., Jakarta, Remote, Bandung", id="location") }}
+            {% if form.location.errors %}
+                <div class="text-danger mt-1">
+                    {% for error in form.location.errors %}
+                        <small>{{ error }}</small>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group mt-3">
+            <label class="form-label fw-bold">
+                <span data-i18n="slots_label_en">Available Slots</span>
+                <span data-i18n="slots_label_id" class="d-none">Kuota Tersedia</span>
+            </label>
+            <small class="text-muted d-block mb-2">
+                <span data-i18n="slots_help_en">How many positions are open?</span>
+                <span data-i18n="slots_help_id" class="d-none">Berapa posisi yang terbuka?</span>
+            </small>
+            {{ form.slots(class="form-control", placeholder="e.g., 5") }}
+            {% if form.slots.errors %}
+                <div class="text-danger mt-1">
+                    {% for error in form.slots.errors %}
+                        <small>{{ error }}</small>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- NEW SALARY FIELDS -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group mt-3">
+                    <label class="form-label fw-bold">
+                        <span data-i18n="salary_min_label_en">Minimum Salary (Optional)</span>
+                        <span data-i18n="salary_min_label_id" class="d-none">Gaji Minimum (Opsional)</span>
+                    </label>
+                    <small class="text-muted d-block mb-2">
+                        <span data-i18n="salary_min_help_en">e.g., 5000000 (IDR)</span>
+                        <span data-i18n="salary_min_help_id" class="d-none">cth: 5000000 (IDR)</span>
+                    </small>
+                    {{ form.salary_min(class="form-control", placeholder="e.g., 5000000") }}
+                    {% if form.salary_min.errors %}
+                        <div class="text-danger mt-1">
+                            {% for error in form.salary_min.errors %}
+                                <small>{{ error }}</small>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group mt-3">
+                    <label class="form-label fw-bold">
+                        <span data-i18n="salary_max_label_en">Maximum Salary (Optional)</span>
+                        <span data-i18n="salary_max_label_id" class="d-none">Gaji Maksimum (Opsional)</span>
+                    </label>
+                    <small class="text-muted d-block mb-2">
+                        <span data-i18n="salary_max_help_en">e.g., 8000000 (IDR)</span>
+                        <span data-i18n="salary_max_help_id" class="d-none">cth: 8000000 (IDR)</span>
+                    </small>
+                    {{ form.salary_max(class="form-control", placeholder="e.g., 8000000") }}
+                    {% if form.salary_max.errors %}
+                        <div class="text-danger mt-1">
+                            {% for error in form.salary_max.errors %}
+                                <small>{{ error }}</small>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <!-- END NEW SALARY FIELDS -->
+        
+        <div class="form-group mt-3">
+            <label class="form-label fw-bold">
+                <span data-i18n="description_label_en">Job Description</span>
+                <span data-i18n="description_label_id" class="d-none">Deskripsi Pekerjaan</span>
+            </label>
+            <small class="text-muted d-block mb-2">
+                <span data-i18n="description_help_en">Describe the responsibilities and daily tasks</span>
+                <span data-i18n="description_help_id" class="d-none">Jelaskan tanggung jawab dan tugas harian</span>
+            </small>
+            {{ form.description(class="form-control", rows="6", placeholder="Describe the job responsibilities, requirements, qualifications, and any benefits...", id="description") }}
+            {% if form.description.errors %}
+                <div class="text-danger mt-1">
+                    {% for error in form.description.errors %}
+                        <small>{{ error }}</small>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group mt-3">
+            <label class="form-label fw-bold">
+                <span data-i18n="qualifications_label_en">Qualifications</span>
+                <span data-i18n="qualifications_label_id" class="d-none">Kualifikasi</span>
+            </label>
+            <small class="text-muted d-block mb-2">
+                <span data-i18n="qualifications_help_en">List the required skills and qualifications for the candidate</span>
+                <span data-i18n="qualifications_help_id" class="d-none">Sebutkan keterampilan dan kualifikasi yang dibutuhkan</span>
+            </small>
+            {{ form.qualifications(class="form-control", rows="4", placeholder="e.g., Bachelor's degree, 3+ years experience in Python...") }}
+            {% if form.qualifications.errors %}
+                <div class="text-danger mt-1">
+                    {% for error in form.qualifications.errors %}
+                        <small>{{ error }}</small>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group mt-4">
+            {{ form.submit(class="btn btn-primary form-control", **{'data-i18n-value-en': 'Post Job', 'data-i18n-value-id': 'Posting Pekerjaan'}) }}
+        </div>
+        
+        <div class="mt-3 text-center">
+            <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">
+                <span data-i18n="back_to_dashboard_en">Back to Dashboard</span>
+                <span data-i18n="back_to_dashboard_id" class="d-none">Kembali ke Dasbor</span>
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}
