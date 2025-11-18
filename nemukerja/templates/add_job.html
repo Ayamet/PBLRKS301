@@ -36,7 +36,9 @@
                 <span data-i18n="job_title_help_en">Enter a clear and descriptive job title</span>
                 <span data-i18n="job_title_help_id" class="d-none">Masukkan judul pekerjaan yang jelas dan deskriptif</span>
             </small>
-            {{ form.title(class="form-control", placeholder="e.g., Senior Web Developer, Marketing Manager", id="title") }}
+            {{ form.title(class="form-control", id="title",
+               **{'data-i18n-placeholder-en': 'e.g., Senior Web Developer, Marketing Manager', 
+                  'data-i18n-placeholder-id': 'cth., Pengembang Web Senior, Manajer Pemasaran'}) }}
             {% if form.title.errors %}
                 <div class="text-danger mt-1">
                     {% for error in form.title.errors %}
@@ -55,7 +57,9 @@
                 <span data-i18n="location_help_en">Where is this job located?</span>
                 <span data-i18n="location_help_id" class="d-none">Di mana lokasi pekerjaan ini?</span>
             </small>
-            {{ form.location(class="form-control", placeholder="e.g., Jakarta, Remote, Bandung", id="location") }}
+            {{ form.location(class="form-control", id="location",
+               **{'data-i18n-placeholder-en': 'e.g., Jakarta, Remote, Bandung', 
+                  'data-i18n-placeholder-id': 'cth., Jakarta, Remote, Bandung'}) }}
             {% if form.location.errors %}
                 <div class="text-danger mt-1">
                     {% for error in form.location.errors %}
@@ -74,7 +78,9 @@
                 <span data-i18n="slots_help_en">How many positions are open?</span>
                 <span data-i18n="slots_help_id" class="d-none">Berapa posisi yang terbuka?</span>
             </small>
-            {{ form.slots(class="form-control", placeholder="e.g., 5") }}
+            {{ form.slots(class="form-control",
+               **{'data-i18n-placeholder-en': 'e.g., 5', 
+                  'data-i18n-placeholder-id': 'cth., 5'}) }}
             {% if form.slots.errors %}
                 <div class="text-danger mt-1">
                     {% for error in form.slots.errors %}
@@ -84,7 +90,6 @@
             {% endif %}
         </div>
 
-        <!-- NEW SALARY FIELDS -->
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group mt-3">
@@ -96,7 +101,9 @@
                         <span data-i18n="salary_min_help_en">e.g., 5000000 (IDR)</span>
                         <span data-i18n="salary_min_help_id" class="d-none">cth: 5000000 (IDR)</span>
                     </small>
-                    {{ form.salary_min(class="form-control", placeholder="e.g., 5000000") }}
+                    {{ form.salary_min(class="form-control",
+                       **{'data-i18n-placeholder-en': 'e.g., 5000000', 
+                          'data-i18n-placeholder-id': 'cth., 5000000'}) }}
                     {% if form.salary_min.errors %}
                         <div class="text-danger mt-1">
                             {% for error in form.salary_min.errors %}
@@ -116,7 +123,9 @@
                         <span data-i18n="salary_max_help_en">e.g., 8000000 (IDR)</span>
                         <span data-i18n="salary_max_help_id" class="d-none">cth: 8000000 (IDR)</span>
                     </small>
-                    {{ form.salary_max(class="form-control", placeholder="e.g., 8000000") }}
+                    {{ form.salary_max(class="form-control",
+                       **{'data-i18n-placeholder-en': 'e.g., 8000000', 
+                          'data-i18n-placeholder-id': 'cth., 8000000'}) }}
                     {% if form.salary_max.errors %}
                         <div class="text-danger mt-1">
                             {% for error in form.salary_max.errors %}
@@ -127,7 +136,6 @@
                 </div>
             </div>
         </div>
-        <!-- END NEW SALARY FIELDS -->
         
         <div class="form-group mt-3">
             <label class="form-label fw-bold">
@@ -138,7 +146,9 @@
                 <span data-i18n="description_help_en">Describe the responsibilities and daily tasks</span>
                 <span data-i18n="description_help_id" class="d-none">Jelaskan tanggung jawab dan tugas harian</span>
             </small>
-            {{ form.description(class="form-control", rows="6", placeholder="Describe the job responsibilities, requirements, qualifications, and any benefits...", id="description") }}
+            {{ form.description(class="form-control", rows="6", id="description",
+               **{'data-i18n-placeholder-en': 'Describe the job responsibilities, requirements, qualifications, and any benefits...', 
+                  'data-i18n-placeholder-id': 'Jelaskan tanggung jawab pekerjaan, persyaratan, kualifikasi, dan tunjangan apa pun...'}) }}
             {% if form.description.errors %}
                 <div class="text-danger mt-1">
                     {% for error in form.description.errors %}
@@ -157,7 +167,9 @@
                 <span data-i18n="qualifications_help_en">List the required skills and qualifications for the candidate</span>
                 <span data-i18n="qualifications_help_id" class="d-none">Sebutkan keterampilan dan kualifikasi yang dibutuhkan</span>
             </small>
-            {{ form.qualifications(class="form-control", rows="4", placeholder="e.g., Bachelor's degree, 3+ years experience in Python...") }}
+            {{ form.qualifications(class="form-control", rows="4",
+               **{'data-i18n-placeholder-en': 'e.g., Bachelor\'s degree, 3+ years experience in Python...', 
+                  'data-i18n-placeholder-id': 'cth., Sarjana, pengalaman 3+ tahun di Python...'}) }}
             {% if form.qualifications.errors %}
                 <div class="text-danger mt-1">
                     {% for error in form.qualifications.errors %}

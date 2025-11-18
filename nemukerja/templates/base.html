@@ -27,20 +27,23 @@
             <div class="collapse navbar-collapse" id="mainNavbarCollapse">
                 
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    
+                    {% if current_user.is_authenticated and not is_admin %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'dashboard' %}nav-link-active{% endif %}" href="{{ url_for('dashboard') }}">
+                            <span data-i18n="nav_dashboard_en">Dashboard</span>
+                            <span data-i18n="nav_dashboard_id" class="d-none">Dasbor</span>
+                        </a>
+                    </li>
+                    {% endif %}
+
                     <li class="nav-item">
                         <a class="nav-link {% if request.endpoint == 'index' %}nav-link-active{% endif %}" href="{{ url_for('index') }}">
                             <span data-i18n="nav_home_en">Home</span>
                             <span data-i18n="nav_home_id" class="d-none">Beranda</span>
                         </a>
                     </li>
-                    {% if not is_admin %}
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.endpoint == 'dashboard' %}nav-link-active{% endif %}" href="{{ url_for('dashboard') }}">
-                            <span data-i18n="nav_jobs_en">Job Listing</span>
-                            <span data-i18n="nav_jobs_id" class="d-none">Lowongan</span>
-                        </a>
-                    </li>
-                    {% endif %}
+
                     <li class="nav-item">
                         <a class="nav-link {% if request.endpoint == 'about' %}nav-link-active{% endif %}" href="{{ url_for('about') }}">
                             <span data-i18n="nav_about_en">About Us</span>
